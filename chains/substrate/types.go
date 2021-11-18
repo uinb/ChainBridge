@@ -4,6 +4,7 @@
 package substrate
 
 import (
+	"bytes"
 	"math/big"
 
 	"github.com/ChainSafe/chainbridge-utils/msg"
@@ -23,6 +24,8 @@ type voteStatus struct {
 	IsRejected bool
 }
 
+
+
 func (m *voteStatus) Decode(decoder scale.Decoder) error {
 	b, err := decoder.ReadOneByte()
 
@@ -41,21 +44,76 @@ func (m *voteStatus) Decode(decoder scale.Decoder) error {
 	return nil
 }
 
+type proposalCall struct {
+	Amount types.U128
+	ResourceId types.Bytes32
+	To types.AccountID
+}
+
+func (pc *proposalCall)Encode(encoder scale.Encoder) error  {
+	err := encoder.Encode(pc.Amount)
+	if err == nil {
+		return err
+	}
+	err = encoder.Encode(pc.ResourceId)
+	if err == nil {
+		return err
+	}
+
+	err = encoder.Encode(pc.To)
+	if err == nil {
+		return err
+	}
+
+	return nil;
+}
+
+func (pc *proposalCall) Decode(decoder scale.Decoder) error  {
+	err := decoder.Decode(pc.Amount)
+	if err == nil {
+		return err
+	}
+	err = decoder.Decode(pc.ResourceId)
+	if err == nil {
+		return err
+	}
+
+	err = decoder.Decode(pc.To)
+	if err == nil {
+		return err
+	}
+
+	return nil;
+
+
+}
+
 // proposal represents an on-chain proposal
 type proposal struct {
 	depositNonce types.U64
-	call         types.Call
+	call         proposalCall
 	sourceId     types.U8
 	resourceId   types.Bytes32
-	method       string
+
 }
 
 // encode takes only nonce and call and encodes them for storage queries
 func (p *proposal) encode() ([]byte, error) {
-	return types.EncodeToBytes(struct {
-		types.U64
-		types.Call
-	}{p.depositNonce, p.call})
+
+
+	var buffer = bytes.Buffer{}
+	encoder := scale.NewEncoder(&buffer)
+	err := encoder.Encode(p.depositNonce)
+	if err != nil {
+		return buffer.Bytes(), err
+	}
+	err = encoder.Encode(p.call)
+	if err != nil {
+		return buffer.Bytes(), err
+	}
+
+	return buffer.Bytes(), nil
+
 }
 
 func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
@@ -64,26 +122,10 @@ func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
 	recipient := types.NewAccountID(m.Payload[1].([]byte))
 	depositNonce := types.U64(m.DepositNonce)
 
-	meta := w.conn.getMetadata()
-	method, err := w.resolveResourceId(m.ResourceId)
-	if err != nil {
-		return nil, err
-	}
-	call, err := types.NewCall(
-		&meta,
-		method,
-		recipient,
-		amount,
-	)
-	if err != nil {
-		return nil, err
-	}
-	if w.extendCall {
-		eRID, err := types.EncodeToBytes(m.ResourceId)
-		if err != nil {
-			return nil, err
-		}
-		call.Args = append(call.Args, eRID...)
+	call := proposalCall{
+		Amount: amount,
+		ResourceId: types.NewBytes32(m.ResourceId),
+		To: recipient,
 	}
 
 	return &proposal{
@@ -91,10 +133,9 @@ func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
 		call:         call,
 		sourceId:     types.U8(m.Source),
 		resourceId:   types.NewBytes32(m.ResourceId),
-		method:       method,
 	}, nil
 }
-
+/*
 func (w *writer) createNonFungibleProposal(m msg.Message) (*proposal, error) {
 	tokenId := types.NewU256(*big.NewInt(0).SetBytes(m.Payload[0].([]byte)))
 	recipient := types.NewAccountID(m.Payload[1].([]byte))
@@ -165,3 +206,4 @@ func (w *writer) createGenericProposal(m msg.Message) (*proposal, error) {
 		method:       method,
 	}, nil
 }
+*/

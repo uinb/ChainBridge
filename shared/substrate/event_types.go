@@ -1,11 +1,11 @@
-package substrate
+package utils
 
 
 import (
-"github.com/centrifuge/go-substrate-rpc-client/v3/types"
+	"github.com/centrifuge/go-substrate-rpc-client/types"
 )
 
-type Events struct {
+type SubstrateEvents struct {
 	ChainBridge_FungibleTransfer        []EventFungibleTransfer        //nolint:stylecheck,golint
 	ChainBridge_NonFungibleTransfer     []EventNonFungibleTransfer     //nolint:stylecheck,golint
 	ChainBridge_GenericTransfer         []EventGenericTransfer         //nolint:stylecheck,golint

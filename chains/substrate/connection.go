@@ -4,13 +4,18 @@
 package substrate
 
 import (
+	"bytes"
+	"context"
 	"fmt"
+	"github.com/centrifuge/go-substrate-rpc-client/config"
+	"github.com/centrifuge/go-substrate-rpc-client/scale"
+	"math/big"
 	"sync"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
 	"github.com/ChainSafe/chainbridge-utils/msg"
 	"github.com/ChainSafe/log15"
-	gsrpc "github.com/centrifuge/go-substrate-rpc-client"
+	"github.com/centrifuge/go-substrate-rpc-client"
 	"github.com/centrifuge/go-substrate-rpc-client/rpc/author"
 	"github.com/centrifuge/go-substrate-rpc-client/signature"
 	"github.com/centrifuge/go-substrate-rpc-client/types"
@@ -97,6 +102,7 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 		return fmt.Errorf("failed to construct call: %w", err)
 	}
 	ext := types.NewExtrinsic(call)
+	ext.Version = 132;
 
 	// Get latest runtime version
 	rv, err := c.api.RPC.State.GetRuntimeVersionLatest()
@@ -125,23 +131,141 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 		TransactionVersion: rv.TransactionVersion,
 	}
 
-	err = ext.Sign(*c.key, o)
+	ext.Sign(*c.key, o)
+	err =signExtrinsic( ext,*c.key, o);
+	if err != nil {
+		c.nonceLock.Unlock()
+		return err
+	}
+	bb, err :=encodeExtrinsic(ext)
+	enc := types.HexEncodeToString(bb.Bytes())
+	fmt.Println(enc)
+
+	//send to chain
+	ctx, cancel := context.WithTimeout(context.Background(), config.Default().SubscribeTimeout)
+	defer cancel()
+
+	cx := make(chan types.ExtrinsicStatus)
+	sub, err := c.api.Client.Subscribe(ctx, "author", "submitAndWatchExtrinsic", "unwatchExtrinsic", "extrinsicUpdate",
+		cx, enc)
 	if err != nil {
 		c.nonceLock.Unlock()
 		return err
 	}
 
-	// Submit and watch the extrinsic
-	sub, err := c.api.RPC.Author.SubmitAndWatchExtrinsic(ext)
+    statusSub := ExtrinsicStatusSubscription{sub: sub, channel: cx}
+
 	c.nonce++
 	c.nonceLock.Unlock()
 	if err != nil {
 		return fmt.Errorf("submission of extrinsic failed: %w", err)
 	}
 	c.log.Trace("Extrinsic submission succeeded")
-	defer sub.Unsubscribe()
+	defer statusSub.Unsubscribe()
 
-	return c.watchSubmission(sub)
+	return c.watchSubmission1(&statusSub)
+}
+
+
+
+
+func signExtrinsic( e types.Extrinsic, signer signature.KeyringPair, o types.SignatureOptions)  error {
+
+
+	mb, err := types.EncodeToBytes(e.Method)
+	if err != nil {
+		return  err
+	}
+
+	era := o.Era
+	if !o.Era.IsMortalEra {
+		era = types.ExtrinsicEra{IsImmortalEra: true}
+	}
+
+	payload := types.ExtrinsicPayloadV4{
+		ExtrinsicPayloadV3: types.ExtrinsicPayloadV3{
+			Method:      mb,
+			Era:         era,
+			Nonce:       o.Nonce,
+			Tip:         o.Tip,
+			SpecVersion: o.SpecVersion,
+			GenesisHash: o.GenesisHash,
+			BlockHash:   o.BlockHash,
+		},
+		TransactionVersion: o.TransactionVersion,
+	}
+
+	signerPubKey := types.Address{
+		IsAccountID: true,
+		AsAccountID: types.NewAccountID(signer.PublicKey),
+	}
+
+	sig, err := payload.Sign(signer)
+	if err != nil {
+		return err
+	}
+
+	extSig := types.ExtrinsicSignatureV4{
+		Signer:    signerPubKey,
+		Signature: types.MultiSignature{IsSr25519: true, AsSr25519: sig},
+		Era:       era,
+		Nonce:     o.Nonce,
+		Tip:       o.Tip,
+	}
+
+	e.Signature = extSig
+
+	return nil
+}
+
+func encodeExtrinsic( e types.Extrinsic) (bytes.Buffer,error) {
+
+		exbs :=bytes.Buffer{}
+
+		encoder := scale.NewEncoder(&exbs)
+		// create a temporary buffer that will receive the plain encoded transaction (version, signature (optional),
+		// method/call)
+		var bb = bytes.Buffer{}
+		tempEnc := scale.NewEncoder(&bb)
+
+		// encode the version of the extrinsic
+		err := tempEnc.Encode(e.Version)
+		if err != nil {
+			return exbs,err
+		}
+
+		// encode the signature if signed
+		if e.IsSigned() {
+			tempEnc.PushByte(0)
+			err = tempEnc.Encode(e.Signature)
+			if err != nil {
+				return exbs,err
+			}
+		}
+
+		// encode the method
+		err = tempEnc.Encode(e.Method)
+		if err != nil {
+			return exbs,err
+		}
+
+		// take the temporary buffer to determine length, write that as prefix
+		eb := bb.Bytes()
+		err = encoder.EncodeUintCompact(*big.NewInt(0).SetUint64(uint64(len(eb))))
+
+		if err != nil {
+			return exbs,err
+		}
+
+		// write the actual encoded transaction
+		err = encoder.Write(eb)
+
+		if err != nil {
+		return exbs,err
+	}
+
+		return exbs,nil
+
 }
 
 func (c *Connection) watchSubmission(sub *author.ExtrinsicStatusSubscription) error {

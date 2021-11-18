@@ -49,10 +49,10 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 	switch m.Type {
 	case msg.FungibleTransfer:
 		prop, err = w.createFungibleProposal(m)
-	case msg.NonFungibleTransfer:
+/*	case msg.NonFungibleTransfer:
 		prop, err = w.createNonFungibleProposal(m)
 	case msg.GenericTransfer:
-		prop, err = w.createGenericProposal(m)
+		prop, err = w.createGenericProposal(m)*/
 	default:
 		w.sysErr <- fmt.Errorf("unrecognized message type received (chain=%d, name=%s)", m.Destination, w.conn.name)
 		return false
@@ -74,7 +74,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 
 		// If active submit call, otherwise skip it. Retry on failure.
 		if valid {
-			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
+			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId))
 
 			err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, prop.call)
 			if err != nil && err.Error() == TerminatedError.Error() {
