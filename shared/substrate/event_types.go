@@ -19,8 +19,139 @@ type SubstrateEvents struct {
 	ChainBridge_ProposalRejected        []EventProposalRejected        //nolint:stylecheck,golint
 	ChainBridge_ProposalSucceeded       []EventProposalSucceeded       //nolint:stylecheck,golint
 	ChainBridge_ProposalFailed          []EventProposalFailed          //nolint:stylecheck,golint
+
+	Token_TokenIssued                   []EventTokenIssued
+	Token_TokenTransfered               []EventTokenTransfered
+	Token_TokenReserved                 []EventTokenReserved
+	Token_TokenUnreserved               []EventTokenUnreserved
+	Token_TokenBurned                   []EventTokenBurned
+	Token_TokenRepatriated              []EventTokenRepatriated
+
+	Receipts_DominatorClaimed           []ReceiptsDominatorClaimed
+	Receipts_CoinHosted                 []ReceiptsCoinHosted
+	Receipts_TokenHosted                []ReceiptsTokenHosted
+	Receipts_CoinRevoked                []ReceiptsCoinRevoked
+	Receipts_TokenRevoked               []ReceiptsTokenRevoked
+
+	Council_CandidateNominated          []CouncilCandidateNominated
+	Council_MembersAnnounced             []CouncilMembersAnnounced
 }
 
+
+type CouncilCandidateNominated struct {
+	Phase      types.Phase
+	AccountId  types.AccountID
+	Topics     []types.Hash
+}
+
+
+type CouncilMembersAnnounced struct {
+	Phase      types.Phase
+	tokenId    types.U32
+	Topics     []types.Hash
+}
+
+type ReceiptsDominatorClaimed struct {
+	Phase      types.Phase
+
+	AccountId 	   types.AccountID
+	AmountCoin types.U128
+	Topics     []types.Hash
+}
+type ReceiptsCoinHosted struct {
+	Phase      types.Phase
+
+	From	   types.AccountID
+	To   	   types.AccountID
+	AmountCoin types.U128
+	Topics     []types.Hash
+}
+
+
+
+type ReceiptsTokenHosted struct {
+	Phase      types.Phase
+
+	From	   types.AccountID
+	To   	   types.AccountID
+	TokenId    types.U32
+	AmountCoin types.U128
+	Topics     []types.Hash
+}
+
+
+
+
+type ReceiptsCoinRevoked struct {
+	Phase      types.Phase
+	From	   types.AccountID
+	To   	   types.AccountID
+	AmountCoin types.U128
+	Topics     []types.Hash
+}
+
+
+type ReceiptsTokenRevoked struct {
+	Phase      types.Phase
+
+	From	   types.AccountID
+	To   	   types.AccountID
+	TokenId    types.U32
+	AmountCoin types.U128
+	Topics     []types.Hash
+}
+
+
+
+type EventTokenTransfered struct {
+	Phase      types.Phase
+	TokenId    types.U32
+	From 	   types.AccountID
+	To   	   types.AccountID
+	Balance    types.U128
+	Topics     []types.Hash
+}
+
+type EventTokenRepatriated struct {
+	Phase      types.Phase
+	TokenId    types.U32
+	From 	   types.AccountID
+	To   	   types.AccountID
+	Balance    types.U128
+	Topics     []types.Hash
+}
+
+type EventTokenBurned struct {
+	Phase     types.Phase
+	TokenId   types.U32
+	AccountId types.AccountID
+	Balance   types.U128
+	Topics     []types.Hash
+}
+
+type EventTokenUnreserved struct {
+	Phase     types.Phase
+	TokenId   types.U32
+	AccountId types.AccountID
+	Balance   types.U128
+	Topics     []types.Hash
+}
+
+type EventTokenReserved struct {
+	Phase     types.Phase
+	TokenId   types.U32
+	AccountId types.AccountID
+	Balance   types.U128
+	Topics     []types.Hash
+}
+
+type EventTokenIssued struct {
+	Phase     types.Phase
+	TokenId   types.U32
+	AccountId types.AccountID
+	Balance   types.U128
+	Topics     []types.Hash
+}
 type EventFungibleTransfer struct {
 	Phase        types.Phase
 	Destination  types.U8
@@ -30,6 +161,7 @@ type EventFungibleTransfer struct {
 	Recipient    types.Bytes
 	Topics       []types.Hash
 }
+
 
 type EventNonFungibleTransfer struct {
 	Phase        types.Phase
