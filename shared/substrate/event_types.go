@@ -34,7 +34,12 @@ type SubstrateEvents struct {
 	Receipts_TokenRevoked               []ReceiptsTokenRevoked
 
 	Council_CandidateNominated          []CouncilCandidateNominated
-	Council_MembersAnnounced             []CouncilMembersAnnounced
+	Council_MembersAnnounced            []CouncilMembersAnnounced
+
+	Elections_StartProposal             []ElectionStartProposal
+	Elections_StopProposal              []ElectionStopProposal
+	Elections_Voted                     []ElectionVoted
+	Elections_AddCandidate              []ElectionAddCandidate
 }
 
 type ElectionStartProposal struct {
