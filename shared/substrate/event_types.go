@@ -37,6 +37,40 @@ type SubstrateEvents struct {
 	Council_MembersAnnounced             []CouncilMembersAnnounced
 }
 
+type ElectionStartProposal struct {
+	Phase types.Phase
+	BlockNumber1   types.U32
+	BlockNumber2   types.U32
+	VoteIndex      types.U32
+	Topics         []types.Hash
+
+}
+
+type ElectionAddCandidate struct {
+	Phase types.Phase
+	Account1   types.AccountID
+	Account2   types.AccountID
+	Topics         []types.Hash
+
+}
+
+type ElectionVoted struct {
+	Phase types.Phase
+	Account1   types.AccountID
+	Account2   types.AccountID
+	Balance    types.U128
+	Topics         []types.Hash
+
+}
+
+
+type ElectionStopProposal struct {
+	Phase types.Phase
+	VoteIndex      types.U32
+	Topics         []types.Hash
+
+}
+
 
 type CouncilCandidateNominated struct {
 	Phase      types.Phase
