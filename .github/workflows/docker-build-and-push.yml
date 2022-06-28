@@ -9,9 +9,6 @@ on:
       - master
     tags:
       - "v*.*.*"
-  release:
-    types:
-      - created
 jobs:
   build-and-deploy:
     name: Docker Deployment
@@ -29,7 +26,7 @@ jobs:
           TIMESTAMP=`date -u +%Y%m%d%H`
           VERSION="${TIMESTAMP}-${GIT_SHORT_COMMIT}"
           if [[ $GITHUB_REF == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/v}
+            VERSION=${GITHUB_REF#refs/tags/}
           fi
           TAGS="${DOCKER_IMAGE}:${VERSION}"
           if [[ $VERSION =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
