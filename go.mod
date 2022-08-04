@@ -2,9 +2,10 @@ module github.com/ChainSafe/ChainBridge
 
 go 1.18
 
-// NOTE - this is a specific branch that does not have the `Claims_Claimed` event since
-// it is colliding with the one that we have in the claims pallet of Centrifuge chain.
-require github.com/centrifuge/go-substrate-rpc-client/v4 v4.0.4-0.20220712143435-ca733c2b3eaf
+// NOTE - this is a specific branch - https://github.com/centrifuge/go-substrate-rpc-client/tree/remove-claims-event,
+// that does not have the `Claims_Claimed` event since it is colliding with the one that we have in the claims pallet
+// of Centrifuge chain.
+require github.com/centrifuge/go-substrate-rpc-client/v4 v4.0.5-0.20220804161806-770d7e202e80
 
 require (
 	github.com/ChainSafe/log15 v1.0.0
