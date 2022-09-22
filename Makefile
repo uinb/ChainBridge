@@ -77,11 +77,11 @@ test-e2e:
 
 test-eth:
 	@echo "  >  \033[32mRunning ethereum tests...\033[0m "
-	go test ./chains/ethereum
+	go test -v --count=1 ./chains/ethereum
 
 test-sub:
 	@echo "  >  \033[32mRunning substrate tests...\033[0m "
-	go test ./chains/substrate
+	go test -v --count=1 ./chains/substrate
 
 docker-start:
 	./scripts/docker/start-docker.sh
