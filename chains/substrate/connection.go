@@ -199,12 +199,13 @@ func (c *Connection) getConst(prefix, name string, res interface{}) error {
 }
 
 func (c *Connection) checkChainId(expected msg.ChainId) error {
+	fmt.Println("expected chain id:", expected)
 	var actual msg.ChainId
 	err := c.getConst(utils.BridgePalletName, "ChainId", &actual)
 	if err != nil {
 		return err
 	}
-
+	fmt.Println("actual chain id:", actual)
 	if actual != expected {
 		return fmt.Errorf("ChainID is incorrect, Expected chainId: %d, got chainId: %d", expected, actual)
 	}

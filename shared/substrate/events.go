@@ -182,4 +182,23 @@ type Events struct {
 	Registry_Mint            []EventRegistryMint            //nolint:stylecheck,golint
 	Registry_RegistryCreated []EventRegistryRegistryCreated //nolint:stylecheck,golint
 	Registry_RegistryTmp     []EventRegistryTmp             //nolint:stylecheck,golint
+
+	ChainBridgeAssets_Created             []types.EventAssetCreated             //nolint:stylecheck,golint
+	ChainBridgeAssets_Issued              []types.EventAssetIssued              //nolint:stylecheck,golint
+	ChainBridgeAssets_Transferred         []types.EventAssetTransferred         //nolint:stylecheck,golint
+	ChainBridgeAssets_Burned              []types.EventAssetBurned              //nolint:stylecheck,golint
+	ChainBridgeAssets_TeamChanged         []types.EventAssetTeamChanged         //nolint:stylecheck,golint
+	ChainBridgeAssets_OwnerChanged        []types.EventAssetOwnerChanged        //nolint:stylecheck,golint
+	ChainBridgeAssets_Frozen              []types.EventAssetFrozen              //nolint:stylecheck,golint
+	ChainBridgeAssets_Thawed              []types.EventAssetThawed              //nolint:stylecheck,golint
+	ChainBridgeAssets_AssetFrozen         []types.EventAssetAssetFrozen         //nolint:stylecheck,golint
+	ChainBridgeAssets_AssetThawed         []types.EventAssetAssetThawed         //nolint:stylecheck,golint
+	ChainBridgeAssets_Destroyed           []types.EventAssetDestroyed           //nolint:stylecheck,golint
+	ChainBridgeAssets_ForceCreated        []types.EventAssetForceCreated        //nolint:stylecheck,golint
+	ChainBridgeAssets_MetadataSet         []types.EventAssetMetadataSet         //nolint:stylecheck,golint
+	ChainBridgeAssets_MetadataCleared     []types.EventAssetMetadataCleared     //nolint:stylecheck,golint
+	ChainBridgeAssets_ApprovedTransfer    []types.EventAssetApprovedTransfer    //nolint:stylecheck,golint
+	ChainBridgeAssets_ApprovalCancelled   []types.EventAssetApprovalCancelled   //nolint:stylecheck,golint
+	ChainBridgeAssets_TransferredApproved []types.EventAssetTransferredApproved //nolint:stylecheck,golint
+	ChainBridgeAssets_AssetStatusChanged  []types.EventAssetAssetStatusChanged  //nolint:stylecheck,golint
 }
