@@ -182,7 +182,7 @@ type Events struct {
 	Registry_Mint            []EventRegistryMint            //nolint:stylecheck,golint
 	Registry_RegistryCreated []EventRegistryRegistryCreated //nolint:stylecheck,golint
 	Registry_RegistryTmp     []EventRegistryTmp             //nolint:stylecheck,golint
-
+	// add octopus pallets events
 	ChainBridgeAssets_Created             []types.EventAssetCreated             //nolint:stylecheck,golint
 	ChainBridgeAssets_Issued              []types.EventAssetIssued              //nolint:stylecheck,golint
 	ChainBridgeAssets_Transferred         []types.EventAssetTransferred         //nolint:stylecheck,golint
