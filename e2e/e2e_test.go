@@ -23,8 +23,8 @@ import (
 	log "github.com/ChainSafe/log15"
 	"github.com/centrifuge/chainbridge-utils/core"
 	"github.com/centrifuge/chainbridge-utils/msg"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 )
 
 const EthAChainId = msg.ChainId(0)
@@ -234,21 +234,26 @@ func Test_ThreeRelayers(t *testing.T) {
 	subClient := subtest.CreateClient(t, sub.AliceKp.AsKeyringPair(), sub.TestSubEndpoint)
 
 	// First lookup the substrate resource IDs
-	var rawRId types.Bytes32
-	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "NativeTokenId", &rawRId)
-	fmt.Printf("subErc20ResourceId:%s \n", rawRId)
-	subErc20ResourceId := msg.ResourceIdFromSlice(rawRId[:])
-	fmt.Println("subErc20ResourceId:", subErc20ResourceId)
+	// var rawRId types.Bytes32
+	// subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "NativeTokenId", &rawRId)
+	// fmt.Printf("subErc20ResourceId:%s \n", rawRId)
+	// subErc20ResourceId := msg.ResourceIdFromSlice(rawRId[:])
+	// fmt.Println("subErc20ResourceId:", subErc20ResourceId)
 
-	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "Erc721Id", &rawRId)
-	fmt.Printf("subErc721ResourceId:%s \n", rawRId)
-	subErc721ResourceId := msg.ResourceIdFromSlice(rawRId[:])
-	fmt.Println("subErc721ResourceId:", subErc721ResourceId)
+	// subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "Erc721Id", &rawRId)
+	// fmt.Printf("subErc721ResourceId:%s \n", rawRId)
+	// subErc721ResourceId := msg.ResourceIdFromSlice(rawRId[:])
+	// fmt.Println("subErc721ResourceId:", subErc721ResourceId)
 
-	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "HashId", &rawRId)
-	fmt.Printf("genericHashResourceId:%s \n", rawRId)
-	genericHashResourceId := msg.ResourceIdFromSlice(rawRId[:])
-	fmt.Println("genericHashResourceId:", genericHashResourceId)
+	// subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "HashId", &rawRId)
+	// fmt.Printf("genericHashResourceId:%s \n", rawRId)
+	// genericHashResourceId := msg.ResourceIdFromSlice(rawRId[:])
+	// fmt.Println("genericHashResourceId:", genericHashResourceId)
+
+	// These are taken from the Polkadot JS UI (Chain State -> Constants)
+	subErc20ResourceId := msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000c76ebe4a02bbc34786d860b355f5a5ce00"))
+	subErc721ResourceId := msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000e389d61c11e5fe32ec1735b3cd38c69501"))
+	genericHashResourceId := msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000f44be64d2de895454c3467021928e55e01"))
 
 	// Base setup for ethA
 	contractsA := eth.DeployTestContracts(t, ethClientA, eth.EthAEndpoint, EthAChainId, big.NewInt(int64(threshold)))
