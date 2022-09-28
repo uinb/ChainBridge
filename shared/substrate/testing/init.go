@@ -19,7 +19,7 @@ func EnsureInitializedChain(t *testing.T, client *utils.Client, relayers []types
 	if err != nil {
 		t.Fatal(err)
 	}
-
+	fmt.Println("relayer count : ", count)
 	// Only perform setup if no relayers exist already (ie. state is uninitialized)
 	if count == 0 {
 		err = utils.InitializeChain(client, relayers, chains, resources, threshold)

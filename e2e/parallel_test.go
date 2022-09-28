@@ -48,72 +48,72 @@ var blockTime = time.Second * 5
 // Delay between tx's to allow more interleaving
 var txInterval = time.Millisecond * 200
 
-func testThreeChainsParallel(t *testing.T, ctx *testContext) {
-	// Creat some additional clients for thread safety
-	subClient := ctx.subClient
-	ethAClientA := ethtest.NewClient(t, eth.EthAEndpoint, eth.AliceKp)
-	ethAClientB := ethtest.NewClient(t, eth.EthAEndpoint, eth.EveKp)
-	ethBClientA := ethtest.NewClient(t, eth.EthBEndpoint, eth.AliceKp)
+// func testThreeChainsParallel(t *testing.T, ctx *testContext) {
+// 	// Creat some additional clients for thread safety
+// 	subClient := ctx.subClient
+// 	ethAClientA := ethtest.NewClient(t, eth.EthAEndpoint, eth.AliceKp)
+// 	ethAClientB := ethtest.NewClient(t, eth.EthAEndpoint, eth.EveKp)
+// 	ethBClientA := ethtest.NewClient(t, eth.EthBEndpoint, eth.AliceKp)
 
-	// Mint tokens to eve and dave, approve handlers
-	ethtest.Erc20Mint(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc20Sub, eth.AliceKp.CommonAddress(), balanceDelta)
-	ethtest.Erc20Mint(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc20Eth, eth.EveKp.CommonAddress(), balanceDelta)
-	ethtest.Erc20Mint(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc20Eth, eth.AliceKp.CommonAddress(), balanceDelta)
-	ethtest.Erc20Approve(t, ethAClientA, ctx.ethA.TestContracts.Erc20Sub, ctx.ethA.BaseContracts.ERC20HandlerAddress, balanceDelta)
-	ethtest.Erc20Approve(t, ethAClientB, ctx.ethA.TestContracts.Erc20Eth, ctx.ethA.BaseContracts.ERC20HandlerAddress, balanceDelta)
-	ethtest.Erc20Approve(t, ethBClientA, ctx.ethB.TestContracts.Erc20Eth, ctx.ethB.BaseContracts.ERC20HandlerAddress, balanceDelta)
+// 	// Mint tokens to eve and dave, approve handlers
+// 	ethtest.Erc20Mint(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc20Sub, eth.AliceKp.CommonAddress(), balanceDelta)
+// 	ethtest.Erc20Mint(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc20Eth, eth.EveKp.CommonAddress(), balanceDelta)
+// 	ethtest.Erc20Mint(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc20Eth, eth.AliceKp.CommonAddress(), balanceDelta)
+// 	ethtest.Erc20Approve(t, ethAClientA, ctx.ethA.TestContracts.Erc20Sub, ctx.ethA.BaseContracts.ERC20HandlerAddress, balanceDelta)
+// 	ethtest.Erc20Approve(t, ethAClientB, ctx.ethA.TestContracts.Erc20Eth, ctx.ethA.BaseContracts.ERC20HandlerAddress, balanceDelta)
+// 	ethtest.Erc20Approve(t, ethBClientA, ctx.ethB.TestContracts.Erc20Eth, ctx.ethB.BaseContracts.ERC20HandlerAddress, balanceDelta)
 
-	// Get current balances
-	subRecipientBalance := subtest.BalanceOf(t, subClient, subRecipient)
-	ethASubRecipientBalance := ethtest.Erc20BalanceOf(t, ethAClientA, ctx.ethA.TestContracts.Erc20Sub, ethRecipient)
-	ethAEthRecipientBalance := ethtest.Erc20BalanceOf(t, ethAClientA, ctx.ethA.TestContracts.Erc20Eth, ethRecipient)
-	ethBRecipientBalance := ethtest.Erc20BalanceOf(t, ethBClientA, ctx.ethB.TestContracts.Erc20Eth, ethRecipient)
+// 	// Get current balances
+// 	subRecipientBalance := subtest.BalanceOf(t, subClient, subRecipient)
+// 	ethASubRecipientBalance := ethtest.Erc20BalanceOf(t, ethAClientA, ctx.ethA.TestContracts.Erc20Sub, ethRecipient)
+// 	ethAEthRecipientBalance := ethtest.Erc20BalanceOf(t, ethAClientA, ctx.ethA.TestContracts.Erc20Eth, ethRecipient)
+// 	ethBRecipientBalance := ethtest.Erc20BalanceOf(t, ethBClientA, ctx.ethB.TestContracts.Erc20Eth, ethRecipient)
 
-	// Execute several sub-tests that call t.Paralell
-	t.Run("Parallel tx submission", func(t *testing.T) {
+// 	// Execute several sub-tests that call t.Paralell
+// 	t.Run("Parallel tx submission", func(t *testing.T) {
 
-		// Substrate -> EthA
-		t.Run("Submit Sub to Eth", func(t *testing.T) {
-			// TODO: Need to run this in sequence, doesn't return if parallel
-			//t.Parallel()
-			submitSubToEth(t, subClient, EthAChainId, ethRecipient.Bytes(), amountPerTest, ctx.EthSubErc20ResourceId)
+// 		// Substrate -> EthA
+// 		t.Run("Submit Sub to Eth", func(t *testing.T) {
+// 			// TODO: Need to run this in sequence, doesn't return if parallel
+// 			//t.Parallel()
+// 			submitSubToEth(t, subClient, EthAChainId, ethRecipient.Bytes(), amountPerTest, ctx.EthSubErc20ResourceId)
 
-		})
-		// EthA -> Substrate
-		t.Run("Submit Eth to Sub", func(t *testing.T) {
-			t.Parallel()
-			submitEthDeposit("Eth to Sub", t, ctx.ethA, ethAClientA, SubChainId, subRecipient, amountPerTest.Int, ctx.EthSubErc20ResourceId)
-		})
-		// EthA -> EthB
-		t.Run("Submit EthA to EthB", func(t *testing.T) {
-			t.Parallel()
-			submitEthDeposit("EthA to EthB", t, ctx.ethA, ethAClientB, EthBChainId, ethRecipient.Bytes(), amountPerTest.Int, ctx.EthEthErc20ResourceId)
-		})
-		// EthB -> EthA
-		t.Run("Submit EthB to EthA", func(t *testing.T) {
-			t.Parallel()
-			submitEthDeposit("EthB to EthA", t, ctx.ethB, ethBClientA, EthAChainId, ethRecipient.Bytes(), amountPerTest.Int, ctx.EthEthErc20ResourceId)
-		})
-	})
+// 		})
+// 		// EthA -> Substrate
+// 		t.Run("Submit Eth to Sub", func(t *testing.T) {
+// 			t.Parallel()
+// 			submitEthDeposit("Eth to Sub", t, ctx.ethA, ethAClientA, SubChainId, subRecipient, amountPerTest.Int, ctx.EthSubErc20ResourceId)
+// 		})
+// 		// EthA -> EthB
+// 		t.Run("Submit EthA to EthB", func(t *testing.T) {
+// 			t.Parallel()
+// 			submitEthDeposit("EthA to EthB", t, ctx.ethA, ethAClientB, EthBChainId, ethRecipient.Bytes(), amountPerTest.Int, ctx.EthEthErc20ResourceId)
+// 		})
+// 		// EthB -> EthA
+// 		t.Run("Submit EthB to EthA", func(t *testing.T) {
+// 			t.Parallel()
+// 			submitEthDeposit("EthB to EthA", t, ctx.ethB, ethBClientA, EthAChainId, ethRecipient.Bytes(), amountPerTest.Int, ctx.EthEthErc20ResourceId)
+// 		})
+// 	})
 
-	// Must wait long enough for processing to complete
-	time.Sleep(blockTime * 10)
+// 	// Must wait long enough for processing to complete
+// 	time.Sleep(blockTime * 10)
 
-	// Calculate and verify expected results
-	t.Run("Assert Sub balance", func(t *testing.T) {
-		subtest.AssertBalanceOf(t, subClient, subRecipient, subRecipientBalance.Add(subRecipientBalance, balanceDelta))
-	})
-	t.Run("Assert EthA Sub balance", func(t *testing.T) {
-		ethtest.Erc20AssertBalance(t, ethAClientA, ethASubRecipientBalance.Add(ethASubRecipientBalance, balanceDelta), ctx.ethA.TestContracts.Erc20Sub, ethRecipient)
-	})
-	t.Run("Assert EthB balance", func(t *testing.T) {
-		ethtest.Erc20AssertBalance(t, ethBClientA, ethBRecipientBalance.Add(ethBRecipientBalance, balanceDelta), ctx.ethB.TestContracts.Erc20Eth, ethRecipient)
-	})
-	t.Run("Assert EthA Eth balance", func(t *testing.T) {
-		ethtest.Erc20AssertBalance(t, ethAClientA, ethAEthRecipientBalance.Add(ethAEthRecipientBalance, balanceDelta), ctx.ethA.TestContracts.Erc20Eth, ethRecipient)
-	})
+// 	// Calculate and verify expected results
+// 	t.Run("Assert Sub balance", func(t *testing.T) {
+// 		subtest.AssertBalanceOf(t, subClient, subRecipient, subRecipientBalance.Add(subRecipientBalance, balanceDelta))
+// 	})
+// 	t.Run("Assert EthA Sub balance", func(t *testing.T) {
+// 		ethtest.Erc20AssertBalance(t, ethAClientA, ethASubRecipientBalance.Add(ethASubRecipientBalance, balanceDelta), ctx.ethA.TestContracts.Erc20Sub, ethRecipient)
+// 	})
+// 	t.Run("Assert EthB balance", func(t *testing.T) {
+// 		ethtest.Erc20AssertBalance(t, ethBClientA, ethBRecipientBalance.Add(ethBRecipientBalance, balanceDelta), ctx.ethB.TestContracts.Erc20Eth, ethRecipient)
+// 	})
+// 	t.Run("Assert EthA Eth balance", func(t *testing.T) {
+// 		ethtest.Erc20AssertBalance(t, ethAClientA, ethAEthRecipientBalance.Add(ethAEthRecipientBalance, balanceDelta), ctx.ethA.TestContracts.Erc20Eth, ethRecipient)
+// 	})
 
-}
+// }
 
 func submitEthDeposit(name string, t *testing.T, ethCtx *eth.TestContext, client *ethutils.Client, destId msg.ChainId, recipient []byte, amount *big.Int, rId msg.ResourceId) {
 	for i := 1; i <= numberOfTxs; i++ {

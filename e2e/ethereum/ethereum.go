@@ -28,7 +28,7 @@ import (
 	"github.com/ethereum/go-ethereum/rpc"
 )
 
-var TestTimeout = time.Second * 30
+var TestTimeout = time.Second * 60
 
 const EthAEndpoint = "ws://localhost:8545"
 const EthBEndpoint = "ws://localhost:8546"
@@ -70,7 +70,7 @@ func CreateConfig(key string, chain msg.ChainId, contracts *utils.DeployedContra
 			"erc20Handler":       contracts.ERC20HandlerAddress.String(),
 			"erc721Handler":      contracts.ERC721HandlerAddress.String(),
 			"genericHandler":     contracts.GenericHandlerAddress.String(),
-			"blockConfirmations": "3",
+			"blockConfirmations": "10",
 		},
 	}
 }

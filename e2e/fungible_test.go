@@ -43,67 +43,67 @@ func testErc20ToSubstrate(t *testing.T, ctx *testContext) {
 	}
 }
 
-func testSubstrateToErc20(t *testing.T, ctx *testContext) {
-	numberOfTxs := 5
-	expectedBalance := big.NewInt(0)
-	recipient := eth.CharlieKp.CommonAddress()
-	ethtest.Erc20AssertBalance(t, ctx.ethA.Client, expectedBalance, ctx.ethA.TestContracts.Erc20Sub, recipient)
-	nonce := subtest.GetDepositNonce(t, ctx.subClient, EthAChainId) + 1
+// func testSubstrateToErc20(t *testing.T, ctx *testContext) {
+// 	numberOfTxs := 5
+// 	expectedBalance := big.NewInt(0)
+// 	recipient := eth.CharlieKp.CommonAddress()
+// 	ethtest.Erc20AssertBalance(t, ctx.ethA.Client, expectedBalance, ctx.ethA.TestContracts.Erc20Sub, recipient)
+// 	nonce := subtest.GetDepositNonce(t, ctx.subClient, EthAChainId) + 1
 
-	for i := 1; i <= numberOfTxs; i++ {
-		i := i // for scope
-		ok := t.Run(fmt.Sprintf("Transfer %d", i), func(t *testing.T) {
-			// Execute transfer
-			amount := types.NewU128(*big.NewInt(int64(i * 5)))
-			subtest.InitiateNativeTransfer(t, ctx.subClient, amount, recipient.Bytes(), EthAChainId)
+// 	for i := 1; i <= numberOfTxs; i++ {
+// 		i := i // for scope
+// 		ok := t.Run(fmt.Sprintf("Transfer %d", i), func(t *testing.T) {
+// 			// Execute transfer
+// 			amount := types.NewU128(*big.NewInt(int64(i * 5)))
+// 			subtest.InitiateNativeTransfer(t, ctx.subClient, amount, recipient.Bytes(), EthAChainId)
 
-			// Wait for event
-			eth.WaitForProposalActive(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
-			eth.WaitForProposalExecutedEvent(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
-			nonce++
+// 			// Wait for event
+// 			eth.WaitForProposalActive(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
+// 			eth.WaitForProposalExecutedEvent(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
+// 			nonce++
 
-			// Verify balance change
-			expectedBalance.Add(expectedBalance, amount.Int)
-			ethtest.Erc20AssertBalance(t, ctx.ethA.Client, expectedBalance, ctx.ethA.TestContracts.Erc20Sub, recipient)
-		})
-		if !ok {
-			return
-		}
-	}
-}
+// 			// Verify balance change
+// 			expectedBalance.Add(expectedBalance, amount.Int)
+// 			ethtest.Erc20AssertBalance(t, ctx.ethA.Client, expectedBalance, ctx.ethA.TestContracts.Erc20Sub, recipient)
+// 		})
+// 		if !ok {
+// 			return
+// 		}
+// 	}
+// }
 
-func testErc20ToErc20(t *testing.T, ctx *testContext) {
-	recipient := eth.CharlieKp.CommonAddress()
-	expectedBalance := big.NewInt(0)
-	nonce := ethtest.GetDepositNonce(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, EthBChainId) + 1
+// func testErc20ToErc20(t *testing.T, ctx *testContext) {
+// 	recipient := eth.CharlieKp.CommonAddress()
+// 	expectedBalance := big.NewInt(0)
+// 	nonce := ethtest.GetDepositNonce(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, EthBChainId) + 1
 
-	numberOfTxs := 5
-	for i := 1; i <= numberOfTxs; i++ {
-		i := i // for scope
-		ok := t.Run(fmt.Sprintf("Transfer %d", i), func(t *testing.T) {
-			amount := big.NewInt(0).Mul(big.NewInt(int64(i)), big.NewInt(5))
-			log.Info("Submitting transaction", "number", i, "recipient", recipient, "resourcId", ctx.EthEthErc20ResourceId.Hex(), "amount", amount.String(), "from", ctx.ethA.Client.Opts.From, "handler", ctx.ethA.BaseContracts.ERC20HandlerAddress)
+// 	numberOfTxs := 5
+// 	for i := 1; i <= numberOfTxs; i++ {
+// 		i := i // for scope
+// 		ok := t.Run(fmt.Sprintf("Transfer %d", i), func(t *testing.T) {
+// 			amount := big.NewInt(0).Mul(big.NewInt(int64(i)), big.NewInt(5))
+// 			log.Info("Submitting transaction", "number", i, "recipient", recipient, "resourcId", ctx.EthEthErc20ResourceId.Hex(), "amount", amount.String(), "from", ctx.ethA.Client.Opts.From, "handler", ctx.ethA.BaseContracts.ERC20HandlerAddress)
 
-			err := utils.UpdateNonce(ctx.ethA.Client)
-			if err != nil {
-				t.Fatal(err)
-			}
+// 			err := utils.UpdateNonce(ctx.ethA.Client)
+// 			if err != nil {
+// 				t.Fatal(err)
+// 			}
 
-			eth.CreateErc20Deposit(t, ctx.ethA.Client, EthBChainId, recipient.Bytes(), amount, ctx.ethA.BaseContracts, ctx.EthEthErc20ResourceId)
+// 			eth.CreateErc20Deposit(t, ctx.ethA.Client, EthBChainId, recipient.Bytes(), amount, ctx.ethA.BaseContracts, ctx.EthEthErc20ResourceId)
 
-			eth.WaitForProposalActive(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
-			eth.WaitForProposalExecutedEvent(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
-			nonce++
+// 			eth.WaitForProposalActive(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
+// 			eth.WaitForProposalExecutedEvent(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
+// 			nonce++
 
-			// Verify balance change
-			expectedBalance.Add(expectedBalance, amount)
-			ethtest.Erc20AssertBalance(t, ctx.ethB.Client, expectedBalance, ctx.ethB.TestContracts.Erc20Eth, recipient)
-		})
-		if !ok {
-			return
-		}
-	}
-}
+// 			// Verify balance change
+// 			expectedBalance.Add(expectedBalance, amount)
+// 			ethtest.Erc20AssertBalance(t, ctx.ethB.Client, expectedBalance, ctx.ethB.TestContracts.Erc20Eth, recipient)
+// 		})
+// 		if !ok {
+// 			return
+// 		}
+// 	}
+// }
 
 func testErc20SubstrateRoundTrip(t *testing.T, ctx *testContext) {
 	// Transfer params

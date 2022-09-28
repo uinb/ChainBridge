@@ -35,7 +35,11 @@ type EventExampleRemark struct {
 	Hash   types.Hash
 	Topics []types.Hash
 }
-
+type EventChainBridgeTransferRemark struct {
+	Phase  types.Phase
+	Hash   types.Hash
+	Topics []types.Hash
+}
 // EventNFTDeposited is emitted when NFT is ready to be deposited to other chain.
 type EventNFTDeposited struct {
 	Phase  types.Phase
@@ -183,6 +187,7 @@ type Events struct {
 	Registry_RegistryCreated []EventRegistryRegistryCreated //nolint:stylecheck,golint
 	Registry_RegistryTmp     []EventRegistryTmp             //nolint:stylecheck,golint
 	// add octopus pallets events
+	ChainBridgeTransfer_Remark            []EventChainBridgeTransferRemark      //nolint:stylecheck,golint
 	ChainBridgeAssets_Created             []types.EventAssetCreated             //nolint:stylecheck,golint
 	ChainBridgeAssets_Issued              []types.EventAssetIssued              //nolint:stylecheck,golint
 	ChainBridgeAssets_Transferred         []types.EventAssetTransferred         //nolint:stylecheck,golint

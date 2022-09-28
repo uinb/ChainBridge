@@ -81,75 +81,75 @@ func testErc721ToSubstrateRoundTrip(t *testing.T, ctx *testContext) {
 
 }
 
-func testErc721EthToEthRoundTrip(t *testing.T, ctx *testContext) {
-	ethARecipient := eth.AliceKp.CommonAddress()
-	ethBRecipient := eth.AliceKp.CommonAddress()
-	numberOfTxs := 5
-	tokens := ethtest.GenerateErc721Tokens(11, numberOfTxs)
-	ethtest.Erc721MintMany(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tokens)
-	ethtest.Erc721ApproveMany(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, ctx.ethA.BaseContracts.ERC721HandlerAddress, tokens)
+// func testErc721EthToEthRoundTrip(t *testing.T, ctx *testContext) {
+// 	ethARecipient := eth.AliceKp.CommonAddress()
+// 	ethBRecipient := eth.AliceKp.CommonAddress()
+// 	numberOfTxs := 5
+// 	tokens := ethtest.GenerateErc721Tokens(11, numberOfTxs)
+// 	ethtest.Erc721MintMany(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tokens)
+// 	ethtest.Erc721ApproveMany(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, ctx.ethA.BaseContracts.ERC721HandlerAddress, tokens)
 
-	nonce := ethtest.GetDepositNonce(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, EthBChainId) + 1
-	for i := 1; i <= numberOfTxs; i++ {
-		i := i // for scope
-		ok := t.Run(fmt.Sprintf("Transfer ethA to ethB %d", i), func(t *testing.T) {
-			tok := tokens[i-1]
+// 	nonce := ethtest.GetDepositNonce(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, EthBChainId) + 1
+// 	for i := 1; i <= numberOfTxs; i++ {
+// 		i := i // for scope
+// 		ok := t.Run(fmt.Sprintf("Transfer ethA to ethB %d", i), func(t *testing.T) {
+// 			tok := tokens[i-1]
 
-			// Verify ownership and intact metadata on ethA
-			ethtest.Erc721AssertOwner(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, ctx.ethA.Client.Opts.From)
-			ethtest.Erc721AssertMetadata(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
+// 			// Verify ownership and intact metadata on ethA
+// 			ethtest.Erc721AssertOwner(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, ctx.ethA.Client.Opts.From)
+// 			ethtest.Erc721AssertMetadata(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
 
-			// Verify non-existence on ethB
-			ethtest.Erc721AssertNonExistence(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id)
+// 			// Verify non-existence on ethB
+// 			ethtest.Erc721AssertNonExistence(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id)
 
-			// Initiate transfer
-			log.Info("Submitting transaction", "number", i, "recipient", ethBRecipient, "resourcId", ctx.EthEthErc721ResourceId.Hex(), "tokenId", tok.Id.String(), "from", ctx.ethA.Client.Opts.From, "handler", ctx.ethA.BaseContracts.ERC721HandlerAddress)
-			eth.CreateErc721Deposit(t, ctx.ethA.Client, EthBChainId, ethBRecipient.Bytes(), tok.Id, ctx.ethA.BaseContracts, ctx.EthEthErc721ResourceId)
+// 			// Initiate transfer
+// 			log.Info("Submitting transaction", "number", i, "recipient", ethBRecipient, "resourcId", ctx.EthEthErc721ResourceId.Hex(), "tokenId", tok.Id.String(), "from", ctx.ethA.Client.Opts.From, "handler", ctx.ethA.BaseContracts.ERC721HandlerAddress)
+// 			eth.CreateErc721Deposit(t, ctx.ethA.Client, EthBChainId, ethBRecipient.Bytes(), tok.Id, ctx.ethA.BaseContracts, ctx.EthEthErc721ResourceId)
 
-			// Wait for proposal events
-			eth.WaitForProposalActive(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
-			eth.WaitForProposalExecutedEvent(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
-			nonce++
+// 			// Wait for proposal events
+// 			eth.WaitForProposalActive(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
+// 			eth.WaitForProposalExecutedEvent(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, nonce)
+// 			nonce++
 
-			// Verify ownership on ethB
-			ethtest.Erc721AssertOwner(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id, ethBRecipient)
-			ethtest.Erc721AssertMetadata(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
+// 			// Verify ownership on ethB
+// 			ethtest.Erc721AssertOwner(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id, ethBRecipient)
+// 			ethtest.Erc721AssertMetadata(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
 
-			// Verify non-existence on ethA
-			ethtest.Erc721AssertNonExistence(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id)
-		})
-		if !ok {
-			return
-		}
-	}
+// 			// Verify non-existence on ethA
+// 			ethtest.Erc721AssertNonExistence(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id)
+// 		})
+// 		if !ok {
+// 			return
+// 		}
+// 	}
 
-	// Aprove handler to now move the tokens
-	ethtest.Erc721ApproveMany(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, ctx.ethB.BaseContracts.ERC721HandlerAddress, tokens)
+// 	// Aprove handler to now move the tokens
+// 	ethtest.Erc721ApproveMany(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, ctx.ethB.BaseContracts.ERC721HandlerAddress, tokens)
 
-	nonce = ethtest.GetDepositNonce(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, EthAChainId) + 1
-	for i := 1; i <= numberOfTxs; i++ {
-		i := i // for scope
-		ok := t.Run(fmt.Sprintf("Transfer ethB to ethA %d", i), func(t *testing.T) {
-			tok := tokens[i-1]
+// 	nonce = ethtest.GetDepositNonce(t, ctx.ethB.Client, ctx.ethB.BaseContracts.BridgeAddress, EthAChainId) + 1
+// 	for i := 1; i <= numberOfTxs; i++ {
+// 		i := i // for scope
+// 		ok := t.Run(fmt.Sprintf("Transfer ethB to ethA %d", i), func(t *testing.T) {
+// 			tok := tokens[i-1]
 
-			// Initiate transfer
-			log.Info("Submitting transaction", "number", i, "recipient", ethBRecipient, "resourceId", ctx.EthEthErc721ResourceId.Hex(), "tokenId", tok.Id.String(), "from", ctx.ethB.Client.Opts.From, "handler", ctx.ethB.BaseContracts.ERC721HandlerAddress)
-			eth.CreateErc721Deposit(t, ctx.ethB.Client, EthAChainId, ethARecipient.Bytes(), tok.Id, ctx.ethB.BaseContracts, ctx.EthEthErc721ResourceId)
+// 			// Initiate transfer
+// 			log.Info("Submitting transaction", "number", i, "recipient", ethBRecipient, "resourceId", ctx.EthEthErc721ResourceId.Hex(), "tokenId", tok.Id.String(), "from", ctx.ethB.Client.Opts.From, "handler", ctx.ethB.BaseContracts.ERC721HandlerAddress)
+// 			eth.CreateErc721Deposit(t, ctx.ethB.Client, EthAChainId, ethARecipient.Bytes(), tok.Id, ctx.ethB.BaseContracts, ctx.EthEthErc721ResourceId)
 
-			// Wait for proposal events
-			eth.WaitForProposalActive(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
-			eth.WaitForProposalExecutedEvent(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
-			nonce++
+// 			// Wait for proposal events
+// 			eth.WaitForProposalActive(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
+// 			eth.WaitForProposalExecutedEvent(t, ctx.ethA.Client, ctx.ethA.BaseContracts.BridgeAddress, nonce)
+// 			nonce++
 
-			// Verify ownership and metadata on ethA
-			ethtest.Erc721AssertOwner(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, ethARecipient)
-			//ethtest.Erc721AssertMetadata(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
+// 			// Verify ownership and metadata on ethA
+// 			ethtest.Erc721AssertOwner(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, ethARecipient)
+// 			//ethtest.Erc721AssertMetadata(t, ctx.ethA.Client, ctx.ethA.TestContracts.Erc721Eth, tok.Id, string(tok.Metadata[:]))
 
-			// Verfy non-existence on ethB
-			ethtest.Erc721AssertNonExistence(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id)
-		})
-		if !ok {
-			return
-		}
-	}
-}
+// 			// Verfy non-existence on ethB
+// 			ethtest.Erc721AssertNonExistence(t, ctx.ethB.Client, ctx.ethB.TestContracts.Erc721Eth, tok.Id)
+// 		})
+// 		if !ok {
+// 			return
+// 		}
+// 	}
+// }

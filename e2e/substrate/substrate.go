@@ -31,8 +31,8 @@ var EveKp = keystore.TestKeyRing.SubstrateKeys[keystore.EveKey]
 
 var RelayerSet = []types.AccountID{
 	types.NewAccountID(BobKp.AsKeyringPair().PublicKey),
-	types.NewAccountID(CharlieKp.AsKeyringPair().PublicKey),
-	types.NewAccountID(DaveKp.AsKeyringPair().PublicKey),
+	// types.NewAccountID(CharlieKp.AsKeyringPair().PublicKey),
+	// types.NewAccountID(DaveKp.AsKeyringPair().PublicKey),
 }
 
 func CreateConfig(key string, chain msg.ChainId) *core.ChainConfig {
