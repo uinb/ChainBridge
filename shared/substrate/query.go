@@ -69,3 +69,14 @@ func GetErc721Token(client *Client, id types.U256) (*Erc721Token, error) {
 	}
 	return &res, nil
 }
+
+func HashExists(client *Client, hash types.Hash) (bool, error) {
+	var res types.Bool
+
+	exists, err := QueryStorage(client, "ChainBridgeTransfer", "AssetsStored", hash[:], nil, &res)
+	if err != nil {
+		return false, err
+	}
+	return exists, nil
+
+}

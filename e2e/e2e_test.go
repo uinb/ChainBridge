@@ -39,18 +39,19 @@ type test struct {
 }
 
 var tests = []test{
-	{"Erc20ToSubstrate", testErc20ToSubstrate},
-	{"SubstrateToErc20", testSubstrateToErc20},
-	{"Erc20toErc20", testErc20ToErc20},
-	{"Erc20 to Substrate Round Trip", testErc20SubstrateRoundTrip},
+	// {"Erc20ToSubstrate", testErc20ToSubstrate},
+	// {"SubstrateToErc20", testSubstrateToErc20},
+	// {"Erc20toErc20", testErc20ToErc20},
+	// {"Erc20 to Substrate Round Trip", testErc20SubstrateRoundTrip},
 
-	{"Erc721 to Substrate Round Trip", testErc721ToSubstrateRoundTrip},
-	{"Erc721 to Erc721 Round Trip", testErc721EthToEthRoundTrip},
+	// {"Erc721 to Substrate Round Trip", testErc721ToSubstrateRoundTrip},
+	// {"Erc721 to Erc721 Round Trip", testErc721EthToEthRoundTrip},
 
-	{"SubstrateHashToGenericHandler", testSubstrateHashToGenericHandler},
-	{"Eth to Eth HashToGenericHandler", testEthereumHashToGenericHandler},
+	{"Sub to Eth HashToGenericHandler", testSubstrateHashToGenericHandler},
+	// {"Eth to Eth HashToGenericHandler", testEthereumHashToGenericHandler},
+	{"Eth to Sub HashToGenericHandler", testEth2SubToGenericHandler},
 
-	{"Three chain with parallel submission", testThreeChainsParallel},
+	// {"Three chain with parallel submission", testThreeChainsParallel},
 }
 
 type testContext struct {
@@ -127,7 +128,7 @@ func attemptToPrintLogs() {
 func assertChanError(t *testing.T, errs <-chan error) {
 	select {
 	case err := <-errs:
-		t.Fatalf("BridgeA Fatal Error: %s", err)
+		t.Fatalf("Bridge Fatal Error: %s", err)
 	default:
 		// Do nothing
 		fmt.Println("No errors here!")
@@ -234,12 +235,20 @@ func Test_ThreeRelayers(t *testing.T) {
 
 	// First lookup the substrate resource IDs
 	var rawRId types.Bytes32
-	subtest.QueryConst(t, subClient, "Example", "NativeTokenId", &rawRId)
+	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "NativeTokenId", &rawRId)
+	fmt.Printf("subErc20ResourceId:%s \n", rawRId)
 	subErc20ResourceId := msg.ResourceIdFromSlice(rawRId[:])
-	subtest.QueryConst(t, subClient, "Example", "Erc721Id", &rawRId)
+	fmt.Println("subErc20ResourceId:", subErc20ResourceId)
+
+	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "Erc721Id", &rawRId)
+	fmt.Printf("subErc721ResourceId:%s \n", rawRId)
 	subErc721ResourceId := msg.ResourceIdFromSlice(rawRId[:])
-	subtest.QueryConst(t, subClient, "Example", "HashId", &rawRId)
+	fmt.Println("subErc721ResourceId:", subErc721ResourceId)
+
+	subtest.QueryConst(t, subClient, "ChainBridgeTransfer", "HashId", &rawRId)
+	fmt.Printf("genericHashResourceId:%s \n", rawRId)
 	genericHashResourceId := msg.ResourceIdFromSlice(rawRId[:])
+	fmt.Println("genericHashResourceId:", genericHashResourceId)
 
 	// Base setup for ethA
 	contractsA := eth.DeployTestContracts(t, ethClientA, eth.EthAEndpoint, EthAChainId, big.NewInt(int64(threshold)))
@@ -270,9 +279,9 @@ func Test_ThreeRelayers(t *testing.T) {
 
 	// Setup substrate client, register resource, add relayers
 	resources := map[msg.ResourceId]subutils.Method{
-		subErc20ResourceId:    subutils.ExampleTransferMethod,
-		subErc721ResourceId:   subutils.ExampleMintErc721Method,
-		genericHashResourceId: subutils.ExampleRemarkMethod,
+		subErc20ResourceId:    subutils.ChainBridgeTransferMethod,
+		subErc721ResourceId:   subutils.ChainBridgeTransferMintErc721Method,
+		genericHashResourceId: subutils.ChainBridgeTransferRemarkMethod,
 	}
 	subtest.EnsureInitializedChain(t, subClient, sub.RelayerSet, []msg.ChainId{EthAChainId}, resources, uint32(threshold))
 

@@ -46,3 +46,15 @@ func AssertErc721NonExistence(t *testing.T, client *utils.Client, id *big.Int) {
 		t.Fatalf("erc721 token %s exists but should have been burned", id)
 	}
 }
+
+func AssertHashExistence(t *testing.T, client *utils.Client, hash types.Hash) {
+
+	exists, err := utils.HashExists(client, hash)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !exists {
+		t.Fatalf("Hash %x does not exist on chain", hash)
+	}
+	log15.Info("Assert existence in asset store", "hash", hash)
+}
