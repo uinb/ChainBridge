@@ -64,21 +64,21 @@ func TestMain(m *testing.M) {
 		panic(err)
 	}
 
-	var nativeTokenId, hashId, nftTokenId []byte
+	// var nativeTokenId, hashId, nftTokenId []byte
 
-	err = utils.QueryConst(client, "ChainBridgeTransfer", "NativeTokenId", &nativeTokenId)
-	if err != nil {
-		panic(err)
-	}
+	// err = utils.QueryConst(client, "ChainBridgeTransfer", "NativeTokenId", &nativeTokenId)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	err = utils.QueryConst(client, "ChainBridgeTransfer", "HashId", &hashId)
-	if err != nil {
-		panic(err)
-	}
-	err = utils.QueryConst(client, "ChainBridgeTransfer", "Erc721Id", &nftTokenId)
-	if err != nil {
-		panic(err)
-	}
+	// err = utils.QueryConst(client, "ChainBridgeTransfer", "HashId", &hashId)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = utils.QueryConst(client, "ChainBridgeTransfer", "Erc721Id", &nftTokenId)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
 	err = utils.InitializeChain(client, relayers, []msg.ChainId{ForeignChain}, resources, relayerThreshold)
 	if err != nil {

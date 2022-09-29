@@ -9,9 +9,11 @@ import (
 	"testing"
 
 	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/ethereum/go-ethereum/common/hexutil"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
 	subtest "github.com/ChainSafe/ChainBridge/shared/substrate/testing"
+	"github.com/centrifuge/chainbridge-utils/msg"
 	message "github.com/centrifuge/chainbridge-utils/msg"
 )
 
@@ -173,8 +175,9 @@ func TestWriter_ResolveMessage_NonFungibleProposal(t *testing.T) {
 }
 
 func TestWriter_ResolveMessage_GenericProposal(t *testing.T) {
-	var rId [32]byte
-	subtest.QueryConst(t, context.client, "Example", "HashId", &rId)
+	// var rId [32]byte
+	// subtest.QueryConst(t, context.client, "ChainBridgeTransfer", "HashId", &rId)
+	rId := msg.ResourceIdFromSlice(hexutil.MustDecode("0x000000000000000000000000000000f44be64d2de895454c3467021928e55e01"))
 	// Construct the message to initiate a vote
 	hash, err := types.NewHashFromHexString("0xcf5e09e29b01f123a9a0de6b128cdd178e2dad4d741ec027ec603075bcb234d4")
 	if err != nil {
