@@ -40,6 +40,7 @@ type EventChainBridgeTransferRemark struct {
 	Hash   types.Hash
 	Topics []types.Hash
 }
+
 // EventNFTDeposited is emitted when NFT is ready to be deposited to other chain.
 type EventNFTDeposited struct {
 	Phase  types.Phase
@@ -174,6 +175,158 @@ type EventRegistryTmp struct {
 	Topics []types.Hash
 }
 
+// lpos event
+type EventPlanNewEra struct {
+	Phase    types.Phase
+	EraIndex types.U32
+	Topics   []types.Hash
+}
+type EventPlanNewEraFailed struct {
+	Phase  types.Phase
+	Topics []types.Hash
+}
+type EventTriggerNewEra struct {
+	Phase  types.Phase
+	Topics []types.Hash
+}
+
+type EraIndex types.U32
+
+type EventEraPayout struct {
+	Phase              types.Phase
+	EraIndex           EraIndex
+	ExcludedValidators []types.AccountID
+	Topics             []types.Hash
+}
+type EventEraPayoutFailed struct {
+	Phase    types.Phase
+	EraIndex EraIndex
+	Topics   []types.Hash
+}
+type SessionIndex types.U32
+
+type EventOldSlashingReportDiscarded struct {
+	Phase        types.Phase
+	SessionIndex SessionIndex
+	Topics       []types.Hash
+}
+
+//appchain event
+type Validator struct {
+	ValidatorIdInAppchain types.AccountID
+	TotalStake            types.U128
+}
+type EventNewPlannedValidators struct {
+	Phase      types.Phase
+	SetId      types.U32
+	Validators []Validator
+	Topics     []types.Hash
+}
+
+type EventLocked struct {
+	Phase    types.Phase
+	Sender   types.AccountID
+	Receiver types.Bytes
+	Amount   types.U32
+	Sequence types.U64
+	Topics   []types.Hash
+}
+type EventUnlocked struct {
+	Phase    types.Phase
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Amount   types.U32
+	Topics   []types.Hash
+}
+type EventUnlockFailed struct {
+	Phase    types.Phase
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Amount   types.U32
+	Topics   []types.Hash
+}
+type EventAssetMinted struct {
+	Phase    types.Phase
+	AssetId  types.U32
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Amount   types.U128
+	Sequence types.OptionU32
+	Topics   []types.Hash
+}
+
+type EventAssetBurned struct {
+	Phase    types.Phase
+	AssetId  types.U32
+	Sender   types.AccountID
+	Receiver types.Bytes
+	Amount   types.U128
+	Sequence types.U64
+	Topics   []types.Hash
+}
+
+type EventAssetMintFailed struct {
+	Phase    types.Phase
+	AssetId  types.U32
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Amount   types.U128
+	Sequence types.OptionU32
+	Topics   []types.Hash
+}
+
+type EventAssetIdGetFailed struct {
+	Phase    types.Phase
+	TokenId  types.Bytes
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Amount   types.U128
+	Topics   []types.Hash
+}
+
+type EventTransferredFromPallet struct {
+	Phase    types.Phase
+	Receiver types.AccountID
+	Amount   types.U128
+	Topics   []types.Hash
+}
+
+type EventNftLocked struct {
+	Phase    types.Phase
+	Sender   types.AccountID
+	Receiver types.Bytes
+	Class    types.U128
+	Instance types.U128
+	Sequence types.U64
+	Topics   []types.Hash
+}
+
+type EventNftUnLocked struct {
+	Phase    types.Phase
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Class    types.U128
+	Instance types.U128
+	Topics   []types.Hash
+}
+
+type EventNftUnlockFailed struct {
+	Phase    types.Phase
+	Sender   types.Bytes
+	Receiver types.AccountID
+	Class    types.U128
+	Instance types.U128
+	Topics   []types.Hash
+}
+
+type EventForceAssetMinted struct {
+	Phase   types.Phase
+	AssetId types.U32
+	Who     types.AccountID
+	Amount  types.U128
+	Topics  []types.Hash
+}
+
 type cEvents = centEvents.Events
 type Events struct {
 	types.EventRecords
@@ -206,4 +359,25 @@ type Events struct {
 	ChainBridgeAssets_ApprovalCancelled   []types.EventAssetApprovalCancelled   //nolint:stylecheck,golint
 	ChainBridgeAssets_TransferredApproved []types.EventAssetTransferredApproved //nolint:stylecheck,golint
 	ChainBridgeAssets_AssetStatusChanged  []types.EventAssetAssetStatusChanged  //nolint:stylecheck,golint
+
+	OctopusLpos_PlanNewEra                 []EventPlanNewEra //nolint:stylecheck,golint
+	OctopusLpos_PlanNewEraFailed           []EventPlanNewEraFailed
+	OctopusLpos_TriggerNewEra              []EventTriggerNewEra
+	OctopusLpos_EraPayout                  []EventEraPayout
+	OctopusLpos_EraPayoutFailed            []EventEraPayoutFailed
+	OctopusLpos_OldSlashingReportDiscarded []EventOldSlashingReportDiscarded
+
+	OctopusAppchain_NewPlannedValidators []EventNewPlannedValidators
+	OctopusAppchain_Locked        []EventLocked
+	OctopusAppchain_Unlocked []EventUnlocked
+	OctopusAppchain_UnlockFailed []EventUnlockFailed
+	OctopusAppchain_AssetMinted []EventAssetMinted
+	OctopusAppchain_AssetBurned []EventAssetBurned
+	OctopusAppchain_AssetMintFailed []EventAssetMintFailed
+	OctopusAppchain_AssetIdGetFailed []EventAssetIdGetFailed
+	OctopusAppchain_TransferredFromPallet []EventTransferredFromPallet
+	OctopusAppchain_NftLocked []EventNftLocked
+	OctopusAppchain_NftUnlocked []EventNftUnLocked
+	OctopusAppchain_NftUnlockFailed []EventNftUnlockFailed
+	OctopusAppchain_ForceAssetMinted []EventForceAssetMinted
 }
