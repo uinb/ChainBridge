@@ -227,7 +227,7 @@ type EventLocked struct {
 	Phase    types.Phase
 	Sender   types.AccountID
 	Receiver types.Bytes
-	Amount   types.U32
+	Amount   types.U128
 	Sequence types.U64
 	Topics   []types.Hash
 }
@@ -235,14 +235,14 @@ type EventUnlocked struct {
 	Phase    types.Phase
 	Sender   types.Bytes
 	Receiver types.AccountID
-	Amount   types.U32
+	Amount   types.U128
 	Topics   []types.Hash
 }
 type EventUnlockFailed struct {
 	Phase    types.Phase
 	Sender   types.Bytes
 	Receiver types.AccountID
-	Amount   types.U32
+	Amount   types.U128
 	Topics   []types.Hash
 }
 type EventAssetMinted struct {
@@ -360,24 +360,24 @@ type Events struct {
 	ChainBridgeAssets_TransferredApproved []types.EventAssetTransferredApproved //nolint:stylecheck,golint
 	ChainBridgeAssets_AssetStatusChanged  []types.EventAssetAssetStatusChanged  //nolint:stylecheck,golint
 
-	OctopusLpos_PlanNewEra                 []EventPlanNewEra //nolint:stylecheck,golint
-	OctopusLpos_PlanNewEraFailed           []EventPlanNewEraFailed
-	OctopusLpos_TriggerNewEra              []EventTriggerNewEra
-	OctopusLpos_EraPayout                  []EventEraPayout
-	OctopusLpos_EraPayoutFailed            []EventEraPayoutFailed
-	OctopusLpos_OldSlashingReportDiscarded []EventOldSlashingReportDiscarded
+	OctopusLpos_PlanNewEra                 []EventPlanNewEra                 //nolint:stylecheck,golint
+	OctopusLpos_PlanNewEraFailed           []EventPlanNewEraFailed           //nolint:stylecheck,golint
+	OctopusLpos_TriggerNewEra              []EventTriggerNewEra              //nolint:stylecheck,golint
+	OctopusLpos_EraPayout                  []EventEraPayout                  //nolint:stylecheck,golint
+	OctopusLpos_EraPayoutFailed            []EventEraPayoutFailed            //nolint:stylecheck,golint
+	OctopusLpos_OldSlashingReportDiscarded []EventOldSlashingReportDiscarded //nolint:stylecheck,golint
 
-	OctopusAppchain_NewPlannedValidators []EventNewPlannedValidators
-	OctopusAppchain_Locked        []EventLocked
-	OctopusAppchain_Unlocked []EventUnlocked
-	OctopusAppchain_UnlockFailed []EventUnlockFailed
-	OctopusAppchain_AssetMinted []EventAssetMinted
-	OctopusAppchain_AssetBurned []EventAssetBurned
-	OctopusAppchain_AssetMintFailed []EventAssetMintFailed
-	OctopusAppchain_AssetIdGetFailed []EventAssetIdGetFailed
-	OctopusAppchain_TransferredFromPallet []EventTransferredFromPallet
-	OctopusAppchain_NftLocked []EventNftLocked
-	OctopusAppchain_NftUnlocked []EventNftUnLocked
-	OctopusAppchain_NftUnlockFailed []EventNftUnlockFailed
-	OctopusAppchain_ForceAssetMinted []EventForceAssetMinted
+	OctopusAppchain_NewPlannedValidators  []EventNewPlannedValidators  //nolint:stylecheck,golint
+	OctopusAppchain_Locked                []EventLocked                //nolint:stylecheck,golint
+	OctopusAppchain_Unlocked              []EventUnlocked              //nolint:stylecheck,golint
+	OctopusAppchain_UnlockFailed          []EventUnlockFailed          //nolint:stylecheck,golint
+	OctopusAppchain_AssetMinted           []EventAssetMinted           //nolint:stylecheck,golint
+	OctopusAppchain_AssetBurned           []EventAssetBurned           //nolint:stylecheck,golint
+	OctopusAppchain_AssetMintFailed       []EventAssetMintFailed       //nolint:stylecheck,golint
+	OctopusAppchain_AssetIdGetFailed      []EventAssetIdGetFailed      //nolint:stylecheck,golint
+	OctopusAppchain_TransferredFromPallet []EventTransferredFromPallet //nolint:stylecheck,golint
+	OctopusAppchain_NftLocked             []EventNftLocked             //nolint:stylecheck,golint
+	OctopusAppchain_NftUnlocked           []EventNftUnLocked           //nolint:stylecheck,golint
+	OctopusAppchain_NftUnlockFailed       []EventNftUnlockFailed       //nolint:stylecheck,golint
+	OctopusAppchain_ForceAssetMinted      []EventForceAssetMinted      //nolint:stylecheck,golint
 }
