@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/ChainSafe/log15"
-	"github.com/centrifuge/chainbridge-utils/crypto/secp256k1"
+	"github.com/uinb/chainbridge-utils/crypto/secp256k1"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"

@@ -6,9 +6,9 @@ package ethereum
 import (
 	"github.com/ChainSafe/ChainBridge/bindings/Bridge"
 	"github.com/ChainSafe/log15"
-	"github.com/centrifuge/chainbridge-utils/core"
-	metrics "github.com/centrifuge/chainbridge-utils/metrics/types"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/core"
+	metrics "github.com/uinb/chainbridge-utils/metrics/types"
+	"github.com/uinb/chainbridge-utils/msg"
 )
 
 var _ core.Writer = &writer{}

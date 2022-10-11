@@ -12,10 +12,10 @@ import (
 
 	"github.com/ChainSafe/ChainBridge/config"
 	log "github.com/ChainSafe/log15"
-	"github.com/centrifuge/chainbridge-utils/crypto"
-	"github.com/centrifuge/chainbridge-utils/crypto/secp256k1"
-	"github.com/centrifuge/chainbridge-utils/crypto/sr25519"
-	"github.com/centrifuge/chainbridge-utils/keystore"
+	"github.com/uinb/chainbridge-utils/crypto"
+	"github.com/uinb/chainbridge-utils/crypto/secp256k1"
+	"github.com/uinb/chainbridge-utils/crypto/sr25519"
+	"github.com/uinb/chainbridge-utils/keystore"
 	gokeystore "github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/urfave/cli/v2"
 )

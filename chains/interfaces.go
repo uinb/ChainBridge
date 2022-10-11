@@ -4,7 +4,7 @@
 package chains
 
 import (
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/msg"
 )
 
 type Router interface {

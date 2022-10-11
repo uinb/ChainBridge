@@ -12,8 +12,8 @@ import (
 
 	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
 	subtest "github.com/ChainSafe/ChainBridge/shared/substrate/testing"
-	"github.com/centrifuge/chainbridge-utils/blockstore"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/blockstore"
+	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
 )
 

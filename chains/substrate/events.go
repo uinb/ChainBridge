@@ -9,7 +9,8 @@ import (
 
 	"github.com/ChainSafe/log15"
 	events "github.com/centrifuge/chainbridge-substrate-events"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/msg"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 type eventName string
@@ -40,6 +41,7 @@ func fungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, e
 	return msg.NewFungibleTransfer(
 		0, // Unset
 		msg.ChainId(evt.Destination),
+		common.BytesToAddress(make([]byte, 20)),
 		msg.Nonce(evt.DepositNonce),
 		evt.Amount.Int,
 		resourceId,
@@ -58,6 +60,7 @@ func nonFungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message
 	return msg.NewNonFungibleTransfer(
 		0, // Unset
 		msg.ChainId(evt.Destination),
+		common.BytesToAddress(make([]byte, 20)),
 		msg.Nonce(evt.DepositNonce),
 		msg.ResourceId(evt.ResourceId),
 		big.NewInt(0).SetBytes(evt.TokenId[:]),
@@ -77,6 +80,7 @@ func genericTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, er
 	return msg.NewGenericTransfer(
 		0, // Unset
 		msg.ChainId(evt.Destination),
+	    common.BytesToAddress(make([]byte, 20)),
 		msg.Nonce(evt.DepositNonce),
 		msg.ResourceId(evt.ResourceId),
 		evt.Metadata,

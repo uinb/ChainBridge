@@ -331,6 +331,7 @@ type cEvents = centEvents.Events
 type Events struct {
 	types.EventRecords
 	events.Events
+	FusotaoEvents
 	cEvents
 	Erc721_Minted            []EventErc721Minted            //nolint:stylecheck,golint
 	Erc721_Transferred       []EventErc721Transferred       //nolint:stylecheck,golint

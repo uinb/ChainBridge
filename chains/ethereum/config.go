@@ -9,8 +9,8 @@ import (
 	"math/big"
 
 	utils "github.com/ChainSafe/ChainBridge/shared/ethereum"
-	"github.com/centrifuge/chainbridge-utils/core"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/core"
+	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/common"
 )
 

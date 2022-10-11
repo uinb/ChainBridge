@@ -8,7 +8,7 @@ import (
 
 	"github.com/ChainSafe/ChainBridge/bindings/ERC20Handler"
 	ERC20 "github.com/ChainSafe/ChainBridge/bindings/ERC20PresetMinterPauser"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/common"
 )
 

@@ -103,7 +103,7 @@ func BatchSubmit(client *Client, calls []types.Call) error {
 		Nonce:              types.NewUCompactFromUInt(uint64(acct.Nonce)),
 		SpecVersion:        rv.SpecVersion,
 		Tip:                types.NewUCompactFromUInt(0),
-		TransactionVersion: 1,
+		TransactionVersion: rv.TransactionVersion,
 	}
 
 	wg := &sync.WaitGroup{}

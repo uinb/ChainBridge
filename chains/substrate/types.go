@@ -5,8 +5,8 @@ package substrate
 
 import (
 	"math/big"
-
-	"github.com/centrifuge/chainbridge-utils/msg"
+    "fmt"
+	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/centrifuge/go-substrate-rpc-client/v4/scale"
 	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
 )
@@ -134,6 +134,21 @@ func (w *writer) createNonFungibleProposal(m msg.Message) (*proposal, error) {
 	}, nil
 }
 
+type H1024 [128]byte
+
+// NewH1024 creates a new H1024 type
+func NewH1024(b []byte) H1024 {
+
+    h := H1024{}
+    copy(h[:], b)
+    return h
+}
+
+// Hex returns a hex string representation of the value (not of the encoded value)
+func (h H1024) Hex() string {
+    return fmt.Sprintf("%#x", h[:])
+}
+
 func (w *writer) createGenericProposal(m msg.Message) (*proposal, error) {
 	meta := w.conn.getMetadata()
 	method, err := w.resolveResourceId(m.ResourceId)
@@ -141,14 +156,28 @@ func (w *writer) createGenericProposal(m msg.Message) (*proposal, error) {
 		return nil, err
 	}
 
+    w.log.Info("-------------------")
+    w.log.Info(fmt.Sprintf("%#x", m.Payload[0].([]byte)[:]))
+/*
+    message, err := types.Encode(m.Payload[0].([]byte)[:])
+    if err != nil {
+        return nil, err
+    } */
 	call, err := types.NewCall(
 		&meta,
 		method,
-		types.NewHash(m.Payload[0].([]byte)),
+		m.Payload[0].([]byte)[:],
 	)
 	if err != nil {
 		return nil, err
 	}
+
+	dep, err := types.Encode(m.Depositer)
+	if err != nil {
+	    return nil, err
+	}
+	call.Args = append(call.Args, dep...)
+
 	if w.extendCall {
 		eRID, err := types.Encode(m.ResourceId)
 		if err != nil {

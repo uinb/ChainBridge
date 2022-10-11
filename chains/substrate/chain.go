@@ -25,12 +25,12 @@ package substrate
 
 import (
 	"github.com/ChainSafe/log15"
-	"github.com/centrifuge/chainbridge-utils/blockstore"
-	"github.com/centrifuge/chainbridge-utils/core"
-	"github.com/centrifuge/chainbridge-utils/crypto/sr25519"
-	"github.com/centrifuge/chainbridge-utils/keystore"
-	metrics "github.com/centrifuge/chainbridge-utils/metrics/types"
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/blockstore"
+	"github.com/uinb/chainbridge-utils/core"
+	"github.com/uinb/chainbridge-utils/crypto/sr25519"
+	"github.com/uinb/chainbridge-utils/keystore"
+	metrics "github.com/uinb/chainbridge-utils/metrics/types"
+	"github.com/uinb/chainbridge-utils/msg"
 )
 
 var _ core.Chain = &Chain{}

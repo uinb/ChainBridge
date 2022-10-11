@@ -4,8 +4,9 @@
 package ethereum
 
 import (
-	"github.com/centrifuge/chainbridge-utils/msg"
+	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 func (l *listener) handleErc20DepositedEvent(destId msg.ChainId, nonce msg.Nonce) (msg.Message, error) {
@@ -20,6 +21,7 @@ func (l *listener) handleErc20DepositedEvent(destId msg.ChainId, nonce msg.Nonce
 	return msg.NewFungibleTransfer(
 		l.cfg.id,
 		destId,
+		common.BytesToAddress(make([]byte, 20)),
 		nonce,
 		record.Amount,
 		record.ResourceID,
@@ -39,6 +41,7 @@ func (l *listener) handleErc721DepositedEvent(destId msg.ChainId, nonce msg.Nonc
 	return msg.NewNonFungibleTransfer(
 		l.cfg.id,
 		destId,
+		common.BytesToAddress(make([]byte, 20)),
 		nonce,
 		record.ResourceID,
 		record.TokenID,
@@ -59,6 +62,7 @@ func (l *listener) handleGenericDepositedEvent(destId msg.ChainId, nonce msg.Non
 	return msg.NewGenericTransfer(
 		l.cfg.id,
 		destId,
+		record.Depositer,
 		nonce,
 		record.ResourceID,
 		record.MetaData[:],
