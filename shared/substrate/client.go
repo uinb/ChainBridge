@@ -9,9 +9,11 @@ import (
 
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/msg"
-	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v4"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/signature"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	gsrpc "github.com/uinb/go-substrate-rpc-client/v4"
+	"github.com/uinb/go-substrate-rpc-client/v4/signature"
+    "github.com/uinb/go-substrate-rpc-client/v4/types"
+     codec "github.com/uinb/go-substrate-rpc-client/v4/types/codec"
+
 )
 
 // Client is a container for all the components required to submit extrinsics
@@ -146,7 +148,7 @@ func (c *Client) MintErc721(tokenId *big.Int, metadata []byte, recipient *signat
 
 func (c *Client) OwnerOf(tokenId *big.Int) (types.AccountID, error) {
 	var owner types.AccountID
-	tokenIdBz, err := types.Encode(types.NewU256(*tokenId))
+	tokenIdBz, err := codec.Encode(types.NewU256(*tokenId))
 	if err != nil {
 		return types.AccountID{}, err
 	}
@@ -163,7 +165,7 @@ func (c *Client) OwnerOf(tokenId *big.Int) (types.AccountID, error) {
 
 func (c *Client) GetDepositNonce(chain msg.ChainId) (uint64, error) {
 	var count types.U64
-	chainId, err := types.Encode(types.U8(chain))
+	chainId, err := codec.Encode(types.U8(chain))
 	if err != nil {
 		return 0, err
 	}

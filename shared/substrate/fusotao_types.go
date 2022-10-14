@@ -4,7 +4,7 @@
 package utils
 
 import (
-    "github.com/centrifuge/go-substrate-rpc-client/v4/types"
+    "github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 type FusotaoEvents struct {
@@ -15,7 +15,7 @@ type FusotaoEvents struct {
     Reward_EraRewardsUpdated            []EventEraRewardsUpdated
     Agent_ControllerTxCompleted         []EventControllerTxCompleted
 
-    Token_TokenIssued                   []EventTokenIssued
+   // Token_TokenIssued                   []EventTokenIssued
     Token_TokenTransfered               []EventTokenTransfered
    	Token_TokenReserved                 []EventTokenReserved
    	Token_TokenUnreserved               []EventTokenUnreserved
@@ -134,8 +134,7 @@ type EventDominatorInActive struct {
 type EventTokenIssued struct {
     Phase      types.Phase
     TokenId    types.U32
-    Contract   types.Bytes
-    Name       types.Bytes
+    symbol     types.Bytes
     Topics  []types.Hash
 }
 

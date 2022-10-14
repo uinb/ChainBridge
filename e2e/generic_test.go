@@ -13,7 +13,7 @@ import (
 	ethtest "github.com/ChainSafe/ChainBridge/shared/ethereum/testing"
 	subtest "github.com/ChainSafe/ChainBridge/shared/substrate/testing"
 	log "github.com/ChainSafe/log15"
-	// "github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	// "github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 func testSubstrateHashToGenericHandler(t *testing.T, ctx *testContext) {

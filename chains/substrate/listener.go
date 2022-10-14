@@ -15,7 +15,7 @@ import (
 	"github.com/uinb/chainbridge-utils/blockstore"
 	metrics "github.com/uinb/chainbridge-utils/metrics/types"
 	"github.com/uinb/chainbridge-utils/msg"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 type listener struct {

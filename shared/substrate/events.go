@@ -4,9 +4,7 @@
 package utils
 
 import (
-	centEvents "github.com/centrifuge/chain-custom-types"
-	events "github.com/centrifuge/chainbridge-substrate-events"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 type EventErc721Minted struct {
@@ -327,58 +325,56 @@ type EventForceAssetMinted struct {
 	Topics  []types.Hash
 }
 
-type cEvents = centEvents.Events
 type Events struct {
 	types.EventRecords
-	events.Events
-	FusotaoEvents
-	cEvents
-	Erc721_Minted            []EventErc721Minted            //nolint:stylecheck,golint
-	Erc721_Transferred       []EventErc721Transferred       //nolint:stylecheck,golint
-	Erc721_Burned            []EventErc721Burned            //nolint:stylecheck,golint
-	Example_Remark           []EventExampleRemark           //nolint:stylecheck,golint
-	Registry_Mint            []EventRegistryMint            //nolint:stylecheck,golint
-	Registry_RegistryCreated []EventRegistryRegistryCreated //nolint:stylecheck,golint
-	Registry_RegistryTmp     []EventRegistryTmp             //nolint:stylecheck,golint
-	// add octopus pallets events
-	ChainBridgeTransfer_Remark            []EventChainBridgeTransferRemark      //nolint:stylecheck,golint
-	ChainBridgeAssets_Created             []types.EventAssetCreated             //nolint:stylecheck,golint
-	ChainBridgeAssets_Issued              []types.EventAssetIssued              //nolint:stylecheck,golint
-	ChainBridgeAssets_Transferred         []types.EventAssetTransferred         //nolint:stylecheck,golint
-	ChainBridgeAssets_Burned              []types.EventAssetBurned              //nolint:stylecheck,golint
-	ChainBridgeAssets_TeamChanged         []types.EventAssetTeamChanged         //nolint:stylecheck,golint
-	ChainBridgeAssets_OwnerChanged        []types.EventAssetOwnerChanged        //nolint:stylecheck,golint
-	ChainBridgeAssets_Frozen              []types.EventAssetFrozen              //nolint:stylecheck,golint
-	ChainBridgeAssets_Thawed              []types.EventAssetThawed              //nolint:stylecheck,golint
-	ChainBridgeAssets_AssetFrozen         []types.EventAssetAssetFrozen         //nolint:stylecheck,golint
-	ChainBridgeAssets_AssetThawed         []types.EventAssetAssetThawed         //nolint:stylecheck,golint
-	ChainBridgeAssets_Destroyed           []types.EventAssetDestroyed           //nolint:stylecheck,golint
-	ChainBridgeAssets_ForceCreated        []types.EventAssetForceCreated        //nolint:stylecheck,golint
-	ChainBridgeAssets_MetadataSet         []types.EventAssetMetadataSet         //nolint:stylecheck,golint
-	ChainBridgeAssets_MetadataCleared     []types.EventAssetMetadataCleared     //nolint:stylecheck,golint
-	ChainBridgeAssets_ApprovedTransfer    []types.EventAssetApprovedTransfer    //nolint:stylecheck,golint
-	ChainBridgeAssets_ApprovalCancelled   []types.EventAssetApprovalCancelled   //nolint:stylecheck,golint
-	ChainBridgeAssets_TransferredApproved []types.EventAssetTransferredApproved //nolint:stylecheck,golint
-	ChainBridgeAssets_AssetStatusChanged  []types.EventAssetAssetStatusChanged  //nolint:stylecheck,golint
-
-	OctopusLpos_PlanNewEra                 []EventPlanNewEra                 //nolint:stylecheck,golint
-	OctopusLpos_PlanNewEraFailed           []EventPlanNewEraFailed           //nolint:stylecheck,golint
-	OctopusLpos_TriggerNewEra              []EventTriggerNewEra              //nolint:stylecheck,golint
-	OctopusLpos_EraPayout                  []EventEraPayout                  //nolint:stylecheck,golint
-	OctopusLpos_EraPayoutFailed            []EventEraPayoutFailed            //nolint:stylecheck,golint
-	OctopusLpos_OldSlashingReportDiscarded []EventOldSlashingReportDiscarded //nolint:stylecheck,golint
-
-	OctopusAppchain_NewPlannedValidators  []EventNewPlannedValidators  //nolint:stylecheck,golint
-	OctopusAppchain_Locked                []EventLocked                //nolint:stylecheck,golint
-	OctopusAppchain_Unlocked              []EventUnlocked              //nolint:stylecheck,golint
-	OctopusAppchain_UnlockFailed          []EventUnlockFailed          //nolint:stylecheck,golint
-	OctopusAppchain_AssetMinted           []EventAssetMinted           //nolint:stylecheck,golint
-	OctopusAppchain_AssetBurned           []EventAssetBurned           //nolint:stylecheck,golint
-	OctopusAppchain_AssetMintFailed       []EventAssetMintFailed       //nolint:stylecheck,golint
-	OctopusAppchain_AssetIdGetFailed      []EventAssetIdGetFailed      //nolint:stylecheck,golint
-	OctopusAppchain_TransferredFromPallet []EventTransferredFromPallet //nolint:stylecheck,golint
-	OctopusAppchain_NftLocked             []EventNftLocked             //nolint:stylecheck,golint
-	OctopusAppchain_NftUnlocked           []EventNftUnLocked           //nolint:stylecheck,golint
-	OctopusAppchain_NftUnlockFailed       []EventNftUnlockFailed       //nolint:stylecheck,golint
-	OctopusAppchain_ForceAssetMinted      []EventForceAssetMinted      //nolint:stylecheck,golint
+	ChainBridgeEvents
+//	FusotaoEvents
+// 	Erc721_Minted            []EventErc721Minted            //nolint:stylecheck,golint
+// 	Erc721_Transferred       []EventErc721Transferred       //nolint:stylecheck,golint
+// 	Erc721_Burned            []EventErc721Burned            //nolint:stylecheck,golint
+// 	Example_Remark           []EventExampleRemark           //nolint:stylecheck,golint
+// 	Registry_Mint            []EventRegistryMint            //nolint:stylecheck,golint
+// 	Registry_RegistryCreated []EventRegistryRegistryCreated //nolint:stylecheck,golint
+// 	Registry_RegistryTmp     []EventRegistryTmp             //nolint:stylecheck,golint
+// 	// add octopus pallets events
+// 	ChainBridgeTransfer_Remark            []EventChainBridgeTransferRemark      //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Created             []types.EventAssetCreated             //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Issued              []types.EventAssetIssued              //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Transferred         []types.EventAssetTransferred         //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Burned              []types.EventAssetBurned              //nolint:stylecheck,golint
+// 	ChainBridgeAssets_TeamChanged         []types.EventAssetTeamChanged         //nolint:stylecheck,golint
+// 	ChainBridgeAssets_OwnerChanged        []types.EventAssetOwnerChanged        //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Frozen              []types.EventAssetFrozen              //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Thawed              []types.EventAssetThawed              //nolint:stylecheck,golint
+// 	ChainBridgeAssets_AssetFrozen         []types.EventAssetAssetFrozen         //nolint:stylecheck,golint
+// 	ChainBridgeAssets_AssetThawed         []types.EventAssetAssetThawed         //nolint:stylecheck,golint
+// 	ChainBridgeAssets_Destroyed           []types.EventAssetDestroyed           //nolint:stylecheck,golint
+// 	ChainBridgeAssets_ForceCreated        []types.EventAssetForceCreated        //nolint:stylecheck,golint
+// 	ChainBridgeAssets_MetadataSet         []types.EventAssetMetadataSet         //nolint:stylecheck,golint
+// 	ChainBridgeAssets_MetadataCleared     []types.EventAssetMetadataCleared     //nolint:stylecheck,golint
+// 	ChainBridgeAssets_ApprovedTransfer    []types.EventAssetApprovedTransfer    //nolint:stylecheck,golint
+// 	ChainBridgeAssets_ApprovalCancelled   []types.EventAssetApprovalCancelled   //nolint:stylecheck,golint
+// 	ChainBridgeAssets_TransferredApproved []types.EventAssetTransferredApproved //nolint:stylecheck,golint
+// 	ChainBridgeAssets_AssetStatusChanged  []types.EventAssetAssetStatusChanged  //nolint:stylecheck,golint
+//
+// 	OctopusLpos_PlanNewEra                 []EventPlanNewEra                 //nolint:stylecheck,golint
+// 	OctopusLpos_PlanNewEraFailed           []EventPlanNewEraFailed           //nolint:stylecheck,golint
+// 	OctopusLpos_TriggerNewEra              []EventTriggerNewEra              //nolint:stylecheck,golint
+// 	OctopusLpos_EraPayout                  []EventEraPayout                  //nolint:stylecheck,golint
+// 	OctopusLpos_EraPayoutFailed            []EventEraPayoutFailed            //nolint:stylecheck,golint
+// 	OctopusLpos_OldSlashingReportDiscarded []EventOldSlashingReportDiscarded //nolint:stylecheck,golint
+//
+// 	OctopusAppchain_NewPlannedValidators  []EventNewPlannedValidators  //nolint:stylecheck,golint
+// 	OctopusAppchain_Locked                []EventLocked                //nolint:stylecheck,golint
+// 	OctopusAppchain_Unlocked              []EventUnlocked              //nolint:stylecheck,golint
+// 	OctopusAppchain_UnlockFailed          []EventUnlockFailed          //nolint:stylecheck,golint
+// 	OctopusAppchain_AssetMinted           []EventAssetMinted           //nolint:stylecheck,golint
+// 	OctopusAppchain_AssetBurned           []EventAssetBurned           //nolint:stylecheck,golint
+// 	OctopusAppchain_AssetMintFailed       []EventAssetMintFailed       //nolint:stylecheck,golint
+// 	OctopusAppchain_AssetIdGetFailed      []EventAssetIdGetFailed      //nolint:stylecheck,golint
+// 	OctopusAppchain_TransferredFromPallet []EventTransferredFromPallet //nolint:stylecheck,golint
+// 	OctopusAppchain_NftLocked             []EventNftLocked             //nolint:stylecheck,golint
+// 	OctopusAppchain_NftUnlocked           []EventNftUnLocked           //nolint:stylecheck,golint
+// 	OctopusAppchain_NftUnlockFailed       []EventNftUnlockFailed       //nolint:stylecheck,golint
+// 	OctopusAppchain_ForceAssetMinted      []EventForceAssetMinted      //nolint:stylecheck,golint
 }

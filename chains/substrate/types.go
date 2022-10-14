@@ -7,8 +7,8 @@ import (
 	"math/big"
     "fmt"
 	"github.com/uinb/chainbridge-utils/msg"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/scale"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/uinb/go-substrate-rpc-client/v4/scale"
+	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 type voteState struct {

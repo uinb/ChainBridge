@@ -14,7 +14,7 @@ import (
 	"github.com/uinb/chainbridge-utils/core"
 	"github.com/uinb/chainbridge-utils/keystore"
 	"github.com/uinb/chainbridge-utils/msg"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 const TestSubEndpoint = "ws://localhost:9944"

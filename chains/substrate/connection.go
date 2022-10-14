@@ -10,10 +10,10 @@ import (
 	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/msg"
-	gsrpc "github.com/centrifuge/go-substrate-rpc-client/v4"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/author"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/signature"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	gsrpc "github.com/uinb/go-substrate-rpc-client/v4"
+	"github.com/uinb/go-substrate-rpc-client/v4/rpc/author"
+	"github.com/uinb/go-substrate-rpc-client/v4/signature"
+	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
 type Connection struct {
@@ -38,6 +38,7 @@ func NewConnection(url string, name string, key *signature.KeyringPair, log log1
 func (c *Connection) getMetadata() (meta types.Metadata) {
 	c.metaLock.RLock()
 	meta = c.meta
+	c.log.Info("Fetched Metadata version", "meta", meta)
 	c.metaLock.RUnlock()
 	return meta
 }
