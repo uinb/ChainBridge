@@ -38,7 +38,6 @@ func NewConnection(url string, name string, key *signature.KeyringPair, log log1
 func (c *Connection) getMetadata() (meta types.Metadata) {
 	c.metaLock.RLock()
 	meta = c.meta
-	c.log.Info("Fetched Metadata version", "meta", meta)
 	c.metaLock.RUnlock()
 	return meta
 }

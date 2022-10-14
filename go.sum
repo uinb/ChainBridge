@@ -413,6 +413,8 @@ github.com/uinb/chainbridge-utils v1.1.10 h1:QLa2jNyw86R4nc0Dduw4LJLbOo6jquBb31J
 github.com/uinb/chainbridge-utils v1.1.10/go.mod h1:pr7le1Dus/8YscgeMHKtjP6DQqRsJFNU5zcRlGrRbu0=
 github.com/uinb/chainbridge-utils v1.1.11 h1:a+7/JKkK8bSVFqNQWO3ZJVIilYd7YnBTe7op93DhA1E=
 github.com/uinb/chainbridge-utils v1.1.11/go.mod h1:pr7le1Dus/8YscgeMHKtjP6DQqRsJFNU5zcRlGrRbu0=
+github.com/uinb/chainbridge-utils v1.1.12 h1:I7LvcH2dNNpCkOgR9WjbzHyegizw1Qu9fAsk5FbgVp8=
+github.com/uinb/chainbridge-utils v1.1.12/go.mod h1:OhWPjBZweWg9aDEbqQDk453ejROT3C5f3kA6lEjn3w0=
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.8 h1:aHV+VTcbn3h1HXhc0WsTb8qnz24Rvavrh1ZXd9Ii518=
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.8/go.mod h1:5g1oM4Zu3BOaLpsKQ+O8PAv2kNuq+kPcA1VzFbsSqxE=
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.9 h1:lsVZ+m6Ohw/M6PdgDIzLj+pfcxZp6L6ess7fxc0QTTw=
@@ -421,6 +423,8 @@ github.com/uinb/go-substrate-rpc-client/v4 v4.0.10 h1:XgtYAwGCWBrowbSbuvWzXrCWRv
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.10/go.mod h1:W95ZfojQ+g0QqZGWg2CeHaHsvYUj+kkJ2AHiEpQQmXw=
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.12 h1:9t0NkC+OZ7+pW3JpQTy8ButdeF/WNOb+Io1jBPRLesQ=
 github.com/uinb/go-substrate-rpc-client/v4 v4.0.12/go.mod h1:W95ZfojQ+g0QqZGWg2CeHaHsvYUj+kkJ2AHiEpQQmXw=
+github.com/uinb/go-substrate-rpc-client/v4 v4.0.13 h1:9/px8j8EZK6SOiBlg8Df/DWN/rfEmotH2ho21Xt5Luc=
+github.com/uinb/go-substrate-rpc-client/v4 v4.0.13/go.mod h1:W95ZfojQ+g0QqZGWg2CeHaHsvYUj+kkJ2AHiEpQQmXw=
 github.com/urfave/cli/v2 v2.3.0 h1:qph92Y649prgesehzOrQjdWyxFOp/QVM+6imKHad91M=
 github.com/urfave/cli/v2 v2.3.0/go.mod h1:LJmUH05zAU44vOAcrfzZQKsZbVcdbOG8rtL3/XcUArI=
 github.com/valyala/bytebufferpool v1.0.0/go.mod h1:6bBcMArwyJ5K/AmCkWv1jt77kVWyCJ6HpOuEn7z0Csc=
