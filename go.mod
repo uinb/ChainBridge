@@ -5,15 +5,14 @@ go 1.18
 // NOTE - this is a specific branch - https://github.com/centrifuge/go-substrate-rpc-client/tree/remove-claims-event,
 // that does not have the `Claims_Claimed` event since it is colliding with the one that we have in the claims pallet
 // of Centrifuge chain.
-require github.com/uinb/go-substrate-rpc-client/v4 v4.0.5-fusotao
-
+require github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao
 require (
 	github.com/ChainSafe/log15 v1.0.0
-	github.com/uinb/chain-custom-types v1.0.3
 	github.com/ethereum/go-ethereum v1.10.17
 	github.com/prometheus/client_golang v1.4.1
 	github.com/stretchr/testify v1.7.0
-	github.com/uinb/chainbridge-utils v1.1.0-fusotao
+	github.com/uinb/chain-custom-types v1.0.3
+	github.com/uinb/chainbridge-utils v1.1.1-fusotao
 	github.com/urfave/cli/v2 v2.3.0
 )
 
