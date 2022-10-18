@@ -7,7 +7,7 @@ import (
 	"os"
 	"testing"
 
-	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
+	utils "github.com/uinb/ChainBridge/shared/substrate"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/keystore"
 	"github.com/uinb/chainbridge-utils/msg"

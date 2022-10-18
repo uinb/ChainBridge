@@ -11,8 +11,8 @@ import (
 	"github.com/uinb/go-substrate-rpc-client/v4/types"
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
-	subtest "github.com/ChainSafe/ChainBridge/shared/substrate/testing"
+	utils "github.com/uinb/ChainBridge/shared/substrate"
+	subtest "github.com/uinb/ChainBridge/shared/substrate/testing"
 	"github.com/uinb/chainbridge-utils/msg"
 	message "github.com/uinb/chainbridge-utils/msg"
 )

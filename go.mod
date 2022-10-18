@@ -1,4 +1,4 @@
-module github.com/ChainSafe/ChainBridge
+module github.com/uinb/ChainBridge
 
 go 1.18
 

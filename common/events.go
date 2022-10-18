@@ -1,10 +1,10 @@
-package utils
+package common
 
 import (
 	"github.com/uinb/go-substrate-rpc-client/v4/types"
 )
 
-type ChainBridgeEvents struct {
+type Events struct {
 	ChainBridge_FungibleTransfer        []EventFungibleTransfer        //nolint:stylecheck,golint
 	ChainBridge_NonFungibleTransfer     []EventNonFungibleTransfer     //nolint:stylecheck,golint
 	ChainBridge_GenericTransfer         []EventGenericTransfer         //nolint:stylecheck,golint

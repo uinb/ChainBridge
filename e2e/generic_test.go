@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	eth "github.com/ChainSafe/ChainBridge/e2e/ethereum"
-	sub "github.com/ChainSafe/ChainBridge/e2e/substrate"
-	ethtest "github.com/ChainSafe/ChainBridge/shared/ethereum/testing"
-	subtest "github.com/ChainSafe/ChainBridge/shared/substrate/testing"
+	eth "github.com/uinb/ChainBridge/e2e/ethereum"
+	sub "github.com/uinb/ChainBridge/e2e/substrate"
+	ethtest "github.com/uinb/ChainBridge/shared/ethereum/testing"
+	subtest "github.com/uinb/ChainBridge/shared/substrate/testing"
 	log "github.com/ChainSafe/log15"
 	// "github.com/uinb/go-substrate-rpc-client/v4/types"
 )

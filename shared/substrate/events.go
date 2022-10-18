@@ -5,6 +5,7 @@ package utils
 
 import (
 	"github.com/uinb/go-substrate-rpc-client/v4/types"
+	events "github.com/uinb/ChainBridge/common"
 )
 
 type EventErc721Minted struct {
@@ -327,6 +328,6 @@ type EventForceAssetMinted struct {
 
 type Events struct {
 	types.EventRecords
-	ChainBridgeEvents
+	events.Events
 
 }

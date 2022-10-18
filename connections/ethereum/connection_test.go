@@ -8,8 +8,8 @@ import (
 	"math/big"
 	"testing"
 
-	ethutils "github.com/ChainSafe/ChainBridge/shared/ethereum"
-	ethtest "github.com/ChainSafe/ChainBridge/shared/ethereum/testing"
+	ethutils "github.com/uinb/ChainBridge/shared/ethereum"
+	ethtest "github.com/uinb/ChainBridge/shared/ethereum/testing"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/keystore"
 	ethcmn "github.com/ethereum/go-ethereum/common"

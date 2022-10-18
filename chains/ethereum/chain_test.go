@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	ethtest "github.com/ChainSafe/ChainBridge/shared/ethereum/testing"
+	ethtest "github.com/uinb/ChainBridge/shared/ethereum/testing"
 	"github.com/uinb/chainbridge-utils/core"
 	"github.com/uinb/chainbridge-utils/keystore"
 	"github.com/uinb/chainbridge-utils/msg"

@@ -10,7 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ChainSafe/ChainBridge/config"
+	"github.com/uinb/ChainBridge/config"
 	log "github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/crypto"
 	"github.com/uinb/chainbridge-utils/crypto/secp256k1"

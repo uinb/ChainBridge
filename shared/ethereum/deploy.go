@@ -7,12 +7,12 @@ import (
 	"context"
 	"math/big"
 
-	"github.com/ChainSafe/ChainBridge/bindings/GenericHandler"
+	"github.com/uinb/ChainBridge/bindings/GenericHandler"
 	"github.com/ethereum/go-ethereum/common"
 
-	bridge "github.com/ChainSafe/ChainBridge/bindings/Bridge"
-	erc20Handler "github.com/ChainSafe/ChainBridge/bindings/ERC20Handler"
-	erc721Handler "github.com/ChainSafe/ChainBridge/bindings/ERC721Handler"
+	bridge "github.com/uinb/ChainBridge/bindings/Bridge"
+	erc20Handler "github.com/uinb/ChainBridge/bindings/ERC20Handler"
+	erc721Handler "github.com/uinb/ChainBridge/bindings/ERC721Handler"
 	"github.com/uinb/chainbridge-utils/keystore"
 )
 

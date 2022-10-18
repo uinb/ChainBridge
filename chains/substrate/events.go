@@ -10,6 +10,7 @@ import (
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/common"
+	 events "github.com/uinb/ChainBridge/common"
 )
 
 type eventName string
@@ -29,7 +30,7 @@ var Subscriptions = []struct {
 }
 
 func fungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, error) {
-	evt, ok := evtI.(EventFungibleTransfer)
+	evt, ok := evtI.(events.EventFungibleTransfer)
 	if !ok {
 		return msg.Message{}, fmt.Errorf("failed to cast EventFungibleTransfer type")
 	}
@@ -49,7 +50,7 @@ func fungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, e
 }
 
 func nonFungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, error) {
-	evt, ok := evtI.(EventNonFungibleTransfer)
+	evt, ok := evtI.(events.EventNonFungibleTransfer)
 	if !ok {
 		return msg.Message{}, fmt.Errorf("failed to cast EventNonFungibleTransfer type")
 	}
@@ -69,7 +70,7 @@ func nonFungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message
 }
 
 func genericTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, error) {
-	evt, ok := evtI.(EventGenericTransfer)
+	evt, ok := evtI.(events.EventGenericTransfer)
 	if !ok {
 		return msg.Message{}, fmt.Errorf("failed to cast EventGenericTransfer type")
 	}

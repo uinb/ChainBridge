@@ -6,7 +6,7 @@ package utils
 import (
 	"math/big"
 
-	"github.com/ChainSafe/ChainBridge/bindings/Bridge"
+	"github.com/uinb/ChainBridge/bindings/Bridge"
 	"github.com/uinb/chainbridge-utils/msg"
 	"github.com/ethereum/go-ethereum/common"
 )

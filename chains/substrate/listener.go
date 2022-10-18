@@ -9,8 +9,8 @@ import (
 	"math/big"
 	"time"
 
-	"github.com/ChainSafe/ChainBridge/chains"
-	utils "github.com/ChainSafe/ChainBridge/shared/substrate"
+	"github.com/uinb/ChainBridge/chains"
+	utils "github.com/uinb/ChainBridge/shared/substrate"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/blockstore"
 	metrics "github.com/uinb/chainbridge-utils/metrics/types"

@@ -363,6 +363,8 @@ github.com/tklauser/numcpus v0.2.2 h1:oyhllyrScuYI6g+h/zUvNXNp1wy7x8qQy3t/piefld
 github.com/tklauser/numcpus v0.2.2/go.mod h1:x3qojaO3uyYt0i56EW/VUYs7uBvdl2fkfZFu0T9wgjM=
 github.com/tyler-smith/go-bip39 v1.0.1-0.20181017060643-dbb3b84ba2ef/go.mod h1:sJ5fKU0s6JVwZjjcUEX2zFOnvq0ASQ2K9Zr6cf67kNs=
 github.com/uinb/chain-custom-types v1.0.3/go.mod h1:Ddm2Ae5rmmyX/aT67lfEWBgIq709+bP+1PcnqJBqz4c=
+github.com/uinb/chainbridge-substrate-events v1.0.0-fusotao h1:WJdochoV5gNHuXy1z7QFgqaF24moCq8jt8bQ4OyfH6U=
+github.com/uinb/chainbridge-substrate-events v1.0.0-fusotao/go.mod h1:91L6HvK6zaryWA6CoYH5AFYFBl9ExCE0Xd8o2KbIsOk=
 github.com/uinb/chainbridge-utils v1.1.0-fusotao h1:LiO3ROPV/Q3Y0AOiaEU32LE7m9TpLddpaTnqTDi70dI=
 github.com/uinb/chainbridge-utils v1.1.0-fusotao/go.mod h1:nFGPU4AnTtv9uFynTw2RwZhPZYYglzLz2KueRrQgzfg=
 github.com/uinb/chainbridge-utils v1.1.1-fusotao h1:JqZ1XsT/bH6B5Bm/1/Y85ZNghOQSgPw2gH8EqiI1jZo=
