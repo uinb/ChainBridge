@@ -45,6 +45,7 @@ func fungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, e
 		msg.Nonce(evt.DepositNonce),
 		evt.Amount.Int,
 		resourceId,
+		[32]byte{0},
 		evt.Recipient,
 	), nil
 }
@@ -64,6 +65,7 @@ func nonFungibleTransferHandler(evtI interface{}, log log15.Logger) (msg.Message
 		msg.Nonce(evt.DepositNonce),
 		msg.ResourceId(evt.ResourceId),
 		big.NewInt(0).SetBytes(evt.TokenId[:]),
+		[32]byte{0},
 		evt.Recipient,
 		evt.Metadata,
 	), nil
@@ -83,6 +85,7 @@ func genericTransferHandler(evtI interface{}, log log15.Logger) (msg.Message, er
 	    common.BytesToAddress(make([]byte, 20)),
 		msg.Nonce(evt.DepositNonce),
 		msg.ResourceId(evt.ResourceId),
+		[32]byte{0},
 		evt.Metadata,
 	), nil
 }

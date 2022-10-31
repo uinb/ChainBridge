@@ -46,8 +46,8 @@ func (l *listener) handleErc721DepositedEvent(destId msg.ChainId, nonce msg.Nonc
 		nonce,
 		record.ResourceID,
 		record.TokenID,
-		record.DestinationRecipientAddress,
 		txHash,
+		record.DestinationRecipientAddress,
 		record.MetaData,
 	), nil
 }
