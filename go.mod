@@ -12,7 +12,7 @@ require (
 	github.com/prometheus/client_golang v1.4.1
 	github.com/stretchr/testify v1.7.0
 	github.com/uinb/chain-custom-types v1.0.3
-	github.com/uinb/chainbridge-utils v1.1.1-fusotao
+	github.com/uinb/chainbridge-utils v1.1.2-fusotao
 	github.com/urfave/cli/v2 v2.3.0
 )
 

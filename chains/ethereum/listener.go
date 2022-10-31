@@ -172,6 +172,7 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 		destId := msg.ChainId(log.Topics[1].Big().Uint64())
 		rId := msg.ResourceIdFromSlice(log.Topics[2].Bytes())
 		nonce := msg.Nonce(log.Topics[3].Big().Uint64())
+		txHash := msg.TxHash(log.TxHash)
 
 		addr, err := l.bridgeContract.ResourceIDToHandlerAddress(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, rId)
 		if err != nil {
@@ -179,11 +180,11 @@ func (l *listener) getDepositEventsForBlock(latestBlock *big.Int) error {
 		}
 
 		if addr == l.cfg.erc20HandlerContract {
-			m, err = l.handleErc20DepositedEvent(destId, nonce)
+			m, err = l.handleErc20DepositedEvent(destId, nonce, txHash)
 		} else if addr == l.cfg.erc721HandlerContract {
-			m, err = l.handleErc721DepositedEvent(destId, nonce)
+			m, err = l.handleErc721DepositedEvent(destId, nonce, txHash)
 		} else if addr == l.cfg.genericHandlerContract {
-			m, err = l.handleGenericDepositedEvent(destId, nonce)
+			m, err = l.handleGenericDepositedEvent(destId, nonce, txHash)
 		} else {
 			l.log.Error("event has unrecognized handler", "handler", addr.Hex())
 			return nil

@@ -365,6 +365,8 @@ github.com/tyler-smith/go-bip39 v1.0.1-0.20181017060643-dbb3b84ba2ef/go.mod h1:s
 github.com/uinb/chain-custom-types v1.0.3/go.mod h1:Ddm2Ae5rmmyX/aT67lfEWBgIq709+bP+1PcnqJBqz4c=
 github.com/uinb/chainbridge-utils v1.1.1-fusotao h1:JqZ1XsT/bH6B5Bm/1/Y85ZNghOQSgPw2gH8EqiI1jZo=
 github.com/uinb/chainbridge-utils v1.1.1-fusotao/go.mod h1:nFGPU4AnTtv9uFynTw2RwZhPZYYglzLz2KueRrQgzfg=
+github.com/uinb/chainbridge-utils v1.1.2-fusotao h1:Fucbh/ssSG3VYTkYz5mxVuta25Es7TG647X+LZKf/Fc=
+github.com/uinb/chainbridge-utils v1.1.2-fusotao/go.mod h1:GSe4qESWeq0Oti93AnAHl9s2KXbx6kHexEwIVT+qO5s=
 github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao h1:NOEImt1Vc5s9WGb41jVI5jVd0ho2NkI34XYOCMsBsk0=
 github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao/go.mod h1:W95ZfojQ+g0QqZGWg2CeHaHsvYUj+kkJ2AHiEpQQmXw=
 github.com/urfave/cli/v2 v2.3.0 h1:qph92Y649prgesehzOrQjdWyxFOp/QVM+6imKHad91M=

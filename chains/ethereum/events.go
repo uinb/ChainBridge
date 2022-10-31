@@ -9,7 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-func (l *listener) handleErc20DepositedEvent(destId msg.ChainId, nonce msg.Nonce) (msg.Message, error) {
+func (l *listener) handleErc20DepositedEvent(destId msg.ChainId, nonce msg.Nonce, txHash msg.TxHash) (msg.Message, error) {
 	l.log.Info("Handling fungible deposit event", "dest", destId, "nonce", nonce)
 
 	record, err := l.erc20HandlerContract.GetDepositRecord(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, uint64(nonce), uint8(destId))
@@ -25,11 +25,12 @@ func (l *listener) handleErc20DepositedEvent(destId msg.ChainId, nonce msg.Nonce
 		nonce,
 		record.Amount,
 		record.ResourceID,
+		txHash,
 		record.DestinationRecipientAddress,
 	), nil
 }
 
-func (l *listener) handleErc721DepositedEvent(destId msg.ChainId, nonce msg.Nonce) (msg.Message, error) {
+func (l *listener) handleErc721DepositedEvent(destId msg.ChainId, nonce msg.Nonce, txHash msg.TxHash) (msg.Message, error) {
 	l.log.Info("Handling nonfungible deposit event")
 
 	record, err := l.erc721HandlerContract.GetDepositRecord(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, uint64(nonce), uint8(destId))
@@ -46,11 +47,12 @@ func (l *listener) handleErc721DepositedEvent(destId msg.ChainId, nonce msg.Nonc
 		record.ResourceID,
 		record.TokenID,
 		record.DestinationRecipientAddress,
+		txHash,
 		record.MetaData,
 	), nil
 }
 
-func (l *listener) handleGenericDepositedEvent(destId msg.ChainId, nonce msg.Nonce) (msg.Message, error) {
+func (l *listener) handleGenericDepositedEvent(destId msg.ChainId, nonce msg.Nonce, txHash msg.TxHash) (msg.Message, error) {
 	l.log.Info("Handling generic deposit event")
 
 	record, err := l.genericHandlerContract.GetDepositRecord(&bind.CallOpts{From: l.conn.Keypair().CommonAddress()}, uint64(nonce), uint8(destId))
@@ -65,6 +67,7 @@ func (l *listener) handleGenericDepositedEvent(destId msg.ChainId, nonce msg.Non
 		record.Depositer,
 		nonce,
 		record.ResourceID,
+		txHash,
 		record.MetaData[:],
 	), nil
 }
