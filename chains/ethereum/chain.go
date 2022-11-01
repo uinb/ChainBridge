@@ -23,7 +23,7 @@ package ethereum
 import (
 	"fmt"
 	"math/big"
-  //  "database/sql"
+    "database/sql"
 	bridge "github.com/uinb/ChainBridge/bindings/Bridge"
 	erc20Handler "github.com/uinb/ChainBridge/bindings/ERC20Handler"
 	erc721Handler "github.com/uinb/ChainBridge/bindings/ERC721Handler"
@@ -164,12 +164,12 @@ func InitializeChain(chainCfg *core.ChainConfig, logger log15.Logger, sysErr cha
 
 	listener := NewListener(conn, cfg, logger, bs, stop, sysErr, m)
 	listener.setContracts(bridgeContract, erc20HandlerContract, erc721HandlerContract, genericHandlerContract)
-   // db, err := sql.Open("mysql", db_url);
-   // if err != nil {
-   //     return nil, err
-   // }
+    db, err := sql.Open("mysql", db_url);
+    if err != nil {
+        return nil, err
+    }
 
-	writer := NewWriter(conn, cfg, logger, stop, sysErr, m)
+	writer := NewWriter(conn, cfg, logger, stop, sysErr, m, db)
 	writer.setContract(bridgeContract)
 
 	return &Chain{

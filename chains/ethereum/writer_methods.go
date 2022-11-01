@@ -266,7 +266,10 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 
 			if err == nil {
 				w.log.Info("Submitted proposal vote", "tx", tx.Hash(), "src", m.Source, "depositNonce", m.DepositNonce)
-				//TODO add database record
+                 l := fmt.Sprintf("insert ignore into t_proposal(f_action,f_nonce, f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', '%s', '%s', '%s', '%s', '%s')",
+                           "vote", string(m.DepositNonce), tx.Hash(), m.ResourceId.Hex(), big.NewInt(0).SetBytes(m.Payload[0].([]byte)), fmt.Sprintf("%#x", m.Payload[1].([]byte)[:]))
+                w.log.Debug("add log", "log", l)
+                w.execSql(l)
 				if w.metrics != nil {
 					w.metrics.VotesSubmitted.Inc()
 				}
@@ -289,13 +292,13 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 	w.log.Error("Submission of Vote transaction failed", "source", m.Source, "dest", m.Destination, "depositNonce", m.DepositNonce)
 	w.sysErr <- ErrFatalTx
 }
-/*
+
 func (w *writer) execSql(sql string) {
     _, err := w.db.Exec(sql)
     if err != nil {
         w.log.Error("add storage error", "error", err)
     }
-}*/
+}
 
 // executeProposal executes the proposal
 func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) {
@@ -321,10 +324,10 @@ func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) 
 
 			if err == nil {
 				w.log.Info("Submitted proposal execution", "tx", tx.Hash(), "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
-			     l := fmt.Sprintf("insert ignore into t_vote_proposal(f_nonce, f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', '%s', '%s', '%s', '%s')",
-			                m.DepositNonce, tx.Hash(), m.ResourceId.Hex(), big.NewInt(0).SetBytes(m.Payload[0].([]byte)), fmt.Sprintf("%#x", m.Payload[1].([]byte)[:]))
+			     l := fmt.Sprintf("insert ignore into t_proposal(f_action, f_nonce, f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', '%s', '%s', '%s', '%s')",
+			                "execute", string(m.DepositNonce), tx.Hash(), m.ResourceId.Hex(), big.NewInt(0).SetBytes(m.Payload[0].([]byte)), fmt.Sprintf("%#x", m.Payload[1].([]byte)[:]))
 				w.log.Debug("add log", "log", l)
-				//TODO add database record
+				w.execSql(l)
 				return
 			} else if err.Error() == ErrNonceTooLow.Error() || err.Error() == ErrTxUnderpriced.Error() {
 				w.log.Error("Nonce too low, will retry")
