@@ -4,6 +4,7 @@
 package ethereum
 
 import (
+ //   "database/sql"
 	"github.com/uinb/ChainBridge/bindings/Bridge"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/core"
@@ -26,6 +27,7 @@ type writer struct {
 	stop           <-chan int
 	sysErr         chan<- error // Reports fatal error to core
 	metrics        *metrics.ChainMetrics
+//	db             *sql.DB
 }
 
 // NewWriter creates and returns writer
@@ -37,6 +39,7 @@ func NewWriter(conn Connection, cfg *Config, log log15.Logger, stop <-chan int, 
 		stop:    stop,
 		sysErr:  sysErr,
 		metrics: m,
+	//	db:      dbase,
 	}
 }
 

@@ -194,7 +194,7 @@ func run(ctx *cli.Context) error {
 		}
 
 		if chain.Type == "ethereum" {
-			newChain, err = ethereum.InitializeChain(chainConfig, logger, sysErr, m)
+			newChain, err = ethereum.InitializeChain(chainConfig, logger, sysErr, m, cfg.Mysql)
 		} else if chain.Type == "substrate" {
 			newChain, err = substrate.InitializeChain(chainConfig, logger, sysErr, m)
 		} else {
@@ -205,7 +205,6 @@ func run(ctx *cli.Context) error {
 			return err
 		}
 		c.AddChain(newChain)
-
 	}
 
 	// Start prometheus and health server

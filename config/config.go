@@ -19,6 +19,7 @@ const DefaultBlockTimeout = int64(180) // 3 minutes
 
 type Config struct {
 	Chains       []RawChainConfig `json:"chains"`
+	Mysql        string           `json:"mysql"`
 	KeystorePath string           `json:"keystorePath,omitempty"`
 }
 
@@ -66,6 +67,9 @@ func (c *Config) ToJSON(file string) *os.File {
 }
 
 func (c *Config) validate() error {
+    if c.Mysql == "" {
+        return fmt.Errorf("required field mysql empty for config")
+    }
 	for _, chain := range c.Chains {
 		if chain.Type == "" {
 			return fmt.Errorf("required field chain.Type empty for chain %s", chain.Id)
