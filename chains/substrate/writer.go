@@ -76,7 +76,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 		if valid {
 			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
 
-			err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, prop.call)
+			err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
 			if err != nil && err.Error() == TerminatedError.Error() {
 				return false
 			} else if err != nil {
