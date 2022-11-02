@@ -23,6 +23,7 @@ package ethereum
 import (
 	"fmt"
 	"math/big"
+	_ "github.com/go-sql-driver/mysql"
     "database/sql"
 	bridge "github.com/uinb/ChainBridge/bindings/Bridge"
 	erc20Handler "github.com/uinb/ChainBridge/bindings/ERC20Handler"

@@ -6,9 +6,11 @@ go 1.18
 // that does not have the `Claims_Claimed` event since it is colliding with the one that we have in the claims pallet
 // of Centrifuge chain.
 require github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao
+
 require (
 	github.com/ChainSafe/log15 v1.0.0
 	github.com/ethereum/go-ethereum v1.10.17
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/prometheus/client_golang v1.4.1
 	github.com/stretchr/testify v1.7.0
 	github.com/uinb/chain-custom-types v1.0.3
@@ -56,6 +58,7 @@ require (
 	golang.org/x/crypto v0.0.0-20220926161630-eccd6366d1be // indirect
 	golang.org/x/sys v0.0.0-20220928140112-f11e5e49a4ec // indirect
 	golang.org/x/term v0.0.0-20210503060354-a79de5458b56 // indirect
+	google.golang.org/appengine v1.6.5 // indirect
 	google.golang.org/protobuf v1.23.0 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
