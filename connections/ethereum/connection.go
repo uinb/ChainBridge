@@ -103,7 +103,8 @@ func (c *Connection) newTransactOpts(value, gasLimit, gasPrice *big.Int) (*bind.
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = value
 	auth.GasLimit = uint64(gasLimit.Int64())
-	auth.GasPrice = gasPrice
+	    //TODO create txn type 2
+	//auth.GasPrice = gasPrice
 	auth.Context = context.Background()
 
 	return auth, nonce, nil

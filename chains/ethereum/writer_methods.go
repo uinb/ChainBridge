@@ -254,7 +254,7 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 				w.log.Error("Failed to update tx opts", "err", err)
 				continue
 			}
-
+            w.log.Error("ex", "xx", w.conn.Opts())
 			tx, err := w.bridgeContract.VoteProposal(
 				w.conn.Opts(),
 				uint8(m.Source),
