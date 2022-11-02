@@ -104,7 +104,7 @@ func (c *Connection) newTransactOpts(value, gasLimit, gasPrice *big.Int) (*bind.
 	auth.Value = value
 	auth.GasLimit = uint64(gasLimit.Int64())
 	    //TODO create txn type 2
-	auth.GasPrice = gasPrice
+	//auth.GasPrice = gasPrice
 	auth.Context = context.Background()
 
 	return auth, nonce, nil
@@ -162,11 +162,11 @@ func multiplyGasPrice(gasEstimate *big.Int, gasMultiplier *big.Float) *big.Int {
 func (c *Connection) LockAndUpdateOpts() error {
 	c.optsLock.Lock()
 
-	gasPrice, err := c.SafeEstimateGas(context.TODO())
-	if err != nil {
-		return err
-	}
-	c.opts.GasPrice = gasPrice
+//	gasPrice, err := c.SafeEstimateGas(context.TODO())
+//	if err != nil {
+//		return err
+//	}
+//	c.opts.GasPrice = gasPrice
 
 	nonce, err := c.conn.PendingNonceAt(context.Background(), c.opts.From)
 	if err != nil {
