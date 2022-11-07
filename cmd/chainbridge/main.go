@@ -196,7 +196,7 @@ func run(ctx *cli.Context) error {
 		if chain.Type == "ethereum" {
 			newChain, err = ethereum.InitializeChain(chainConfig, logger, sysErr, m, cfg.Mysql)
 		} else if chain.Type == "substrate" {
-			newChain, err = substrate.InitializeChain(chainConfig, logger, sysErr, m)
+			newChain, err = substrate.InitializeChain(chainConfig, logger, sysErr, m, cfg.Mysql)
 		} else {
 			return errors.New("unrecognized Chain Type")
 		}

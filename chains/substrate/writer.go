@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"time"
-
+    "database/sql"
 	"github.com/uinb/chainbridge-utils/core"
 
 	utils "github.com/uinb/ChainBridge/shared/substrate"
@@ -28,15 +28,17 @@ type writer struct {
 	log        log15.Logger
 	sysErr     chan<- error
 	metrics    *metrics.ChainMetrics
+	db         *sql.DB
 	extendCall bool // Extend extrinsic calls to substrate with ResourceID.Used for backward compatibility with example pallet.
 }
 
-func NewWriter(conn *Connection, log log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics, extendCall bool) *writer {
+func NewWriter(conn *Connection, log log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics, dbase *sql.DB, extendCall bool) *writer {
 	return &writer{
 		conn:       conn,
 		log:        log,
 		sysErr:     sysErr,
 		metrics:    m,
+		db:         dbase,
 		extendCall: extendCall,
 	}
 }
@@ -44,6 +46,7 @@ func NewWriter(conn *Connection, log log15.Logger, sysErr chan<- error, m *metri
 func (w *writer) ResolveMessage(m msg.Message) bool {
 	var prop *proposal
 	var err error
+	var blockhash string
 
 	// Construct the proposal
 	switch m.Type {
@@ -73,25 +76,39 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 		}
 
 		// If active submit call, otherwise skip it. Retry on failure.
+
+		sql_fmt := "insert into f_substrate_proposal(f_relayer, f_nonce, f_source_address, f_resource_id, f_method,f_block_hash, f_result) values('%s', %d, '%s', '%s', '%s', '%s', '%s')"
 		if valid {
 			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
-
-			err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
+			blockhash, err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
 			if err != nil && err.Error() == TerminatedError.Error() {
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, prop.sourceId, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash,"terminated error")
+				w.log.Info("sql", sql)
+				w.execSql(sql)
 				return false
 			} else if err != nil {
 				w.log.Error("Failed to execute extrinsic", "err", err)
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, prop.sourceId, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "Failed to execute extrinsic")
+				w.log.Info("sql", sql)
+				w.execSql(sql)
 				time.Sleep(BlockRetryInterval)
 				continue
 			}
 			if w.metrics != nil {
 				w.metrics.VotesSubmitted.Inc()
 			}
+		    sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, prop.sourceId, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "success")
+		    w.log.Info("sql", sql)
+            w.execSql(sql)
 			return true
 		} else {
 			w.log.Info("Ignoring proposal", "reason", reason, "nonce", prop.depositNonce, "source", prop.sourceId, "resource", prop.resourceId)
+			sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, prop.sourceId, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, reason)
+			w.log.Info("sql", sql)
+			w.execSql(sql)
 			return true
 		}
+
 	}
 	return true
 }
@@ -137,6 +154,13 @@ func (w *writer) proposalValid(prop *proposal) (bool, string, error) {
 	} else {
 		return false, "proposal complete", nil
 	}
+}
+
+func (w *writer) execSql(sql string) {
+    _, err := w.db.Exec(sql)
+    if err != nil {
+        w.log.Error("add storage error", "error", err)
+    }
 }
 
 func containsVote(votes []types.AccountID, voter types.AccountID) bool {

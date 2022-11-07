@@ -24,6 +24,7 @@ As the writer receives messages from the router, it constructs proposals. If a p
 package substrate
 
 import (
+    "database/sql"
 	"github.com/ChainSafe/log15"
 	"github.com/uinb/chainbridge-utils/blockstore"
 	"github.com/uinb/chainbridge-utils/core"
@@ -58,7 +59,7 @@ func checkBlockstore(bs *blockstore.Blockstore, startBlock uint64) (uint64, erro
 	}
 }
 
-func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics) (*Chain, error) {
+func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- error, m *metrics.ChainMetrics, db_url string) (*Chain, error) {
 	kp, err := keystore.KeypairFromAddress(cfg.From, keystore.SubChain, cfg.KeystorePath, cfg.Insecure)
 	if err != nil {
 		return nil, err
@@ -102,9 +103,14 @@ func InitializeChain(cfg *core.ChainConfig, logger log15.Logger, sysErr chan<- e
 
 	ue := parseUseExtended(cfg)
 
+    db, err := sql.Open("mysql", db_url);
+    if err != nil {
+        return nil, err
+    }
+
 	// Setup listener & writer
 	l := NewListener(conn, cfg.Name, cfg.Id, startBlock, logger, bs, stop, sysErr, m)
-	w := NewWriter(conn, logger, sysErr, m, ue)
+	w := NewWriter(conn, logger, sysErr, m, db, ue)
 	return &Chain{
 		cfg:      cfg,
 		conn:     conn,

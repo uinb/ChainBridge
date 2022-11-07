@@ -82,7 +82,7 @@ func (c *Connection) Connect() error {
 
 // SubmitTx constructs and submits an extrinsic to call the method with the given arguments.
 // All args are passed directly into GSRPC. GSRPC types are recommended to avoid serialization inconsistencies.
-func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
+func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) (string, error) {
 	c.log.Debug("Submitting substrate call...", "method", method, "sender", c.key.Address)
 
 	meta := c.getMetadata()
@@ -94,21 +94,21 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 		args...,
 	)
 	if err != nil {
-		return fmt.Errorf("failed to construct call: %w", err)
+		return "", fmt.Errorf("failed to construct call: %w", err)
 	}
 	ext := types.NewExtrinsic(call)
 
 	// Get latest runtime version
 	rv, err := c.api.RPC.State.GetRuntimeVersionLatest()
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	c.nonceLock.Lock()
 	latestNonce, err := c.getLatestNonce()
 	if err != nil {
 		c.nonceLock.Unlock()
-		return err
+		return "", err
 	}
 	if latestNonce > c.nonce {
 		c.nonce = latestNonce
@@ -128,7 +128,7 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 	err = ext.Sign(*c.key, o)
 	if err != nil {
 		c.nonceLock.Unlock()
-		return err
+		return "", err
 	}
 
 	// Submit and watch the extrinsic
@@ -136,7 +136,7 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 	c.nonce++
 	c.nonceLock.Unlock()
 	if err != nil {
-		return fmt.Errorf("submission of extrinsic failed: %w", err)
+		return "", fmt.Errorf("submission of extrinsic failed: %w", err)
 	}
 	c.log.Trace("Extrinsic submission succeeded")
 	defer sub.Unsubscribe()
@@ -144,26 +144,26 @@ func (c *Connection) SubmitTx(method utils.Method, args ...interface{}) error {
 	return c.watchSubmission(sub)
 }
 
-func (c *Connection) watchSubmission(sub *author.ExtrinsicStatusSubscription) error {
+func (c *Connection) watchSubmission(sub *author.ExtrinsicStatusSubscription) (string, error) {
 	for {
 		select {
 		case <-c.stop:
-			return TerminatedError
+			return "", TerminatedError
 		case status := <-sub.Chan():
 			switch {
 			case status.IsInBlock:
 				c.log.Trace("Extrinsic included in block", "block", status.AsInBlock.Hex())
-				return nil
+				return status.AsInBlock.Hex(),nil
 			case status.IsRetracted:
-				return fmt.Errorf("extrinsic retracted: %s", status.AsRetracted.Hex())
+				return "", fmt.Errorf("extrinsic retracted: %s", status.AsRetracted.Hex())
 			case status.IsDropped:
-				return fmt.Errorf("extrinsic dropped from network")
+				return "", fmt.Errorf("extrinsic dropped from network")
 			case status.IsInvalid:
-				return fmt.Errorf("extrinsic invalid")
+				return "", fmt.Errorf("extrinsic invalid")
 			}
 		case err := <-sub.Err():
 			c.log.Trace("Extrinsic subscription error", "err", err)
-			return err
+			return "", err
 		}
 	}
 }
