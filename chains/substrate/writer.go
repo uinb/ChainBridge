@@ -77,19 +77,19 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 
 		// If active submit call, otherwise skip it. Retry on failure.
 
-		sql_fmt := "insert into t_substrate_proposal(f_relayer, f_nonce, f_source_address, f_resource_id, f_method,f_block_hash, f_result) values('%s', %d, '%s', '%s', '%s', '%s', '%s')"
+		sql_fmt := "insert into t_substrate_proposal(f_relayer, f_ethereum_txhash, f_nonce, f_source_address, f_resource_id, f_method,f_block_hash, f_result) values('%s', %d, '%s', '%s', '%s', '%s', '%s')"
 		if valid {
 			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
 			blockhash, err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
 			if err != nil && err.Error() == TerminatedError.Error() {
-				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash,"terminated error")
-				w.log.Info("sql", sql)
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash,"terminated error")
+				w.log.Info("sql","sql", sql)
 				w.execSql(sql)
 				return false
 			} else if err != nil {
 				w.log.Error("Failed to execute extrinsic", "err", err)
-				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "Failed to execute extrinsic")
-				w.log.Info("sql", sql)
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "Failed to execute extrinsic")
+				w.log.Info("sql","sql", sql)
 				w.execSql(sql)
 				time.Sleep(BlockRetryInterval)
 				continue
@@ -97,14 +97,14 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 			if w.metrics != nil {
 				w.metrics.VotesSubmitted.Inc()
 			}
-		    sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "success")
-		    w.log.Info("sql", sql)
+		    sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "success")
+		    w.log.Info("sql","sql", sql)
             w.execSql(sql)
 			return true
 		} else {
 			w.log.Info("Ignoring proposal", "reason", reason, "nonce", prop.depositNonce, "source", prop.sourceId, "resource", prop.resourceId)
-			sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, reason)
-			w.log.Info("sql", sql)
+			sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, reason)
+			w.log.Info("sql","sql", sql)
 			w.execSql(sql)
 			return true
 		}
