@@ -77,7 +77,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 
 		// If active submit call, otherwise skip it. Retry on failure.
 
-		sql_fmt := "insert into f_substrate_proposal(f_relayer, f_nonce, f_source_address, f_resource_id, f_method,f_block_hash, f_result) values('%s', %d, '%s', '%s', '%s', '%s', '%s')"
+		sql_fmt := "insert into t_substrate_proposal(f_relayer, f_nonce, f_source_address, f_resource_id, f_method,f_block_hash, f_result) values('%s', %d, '%s', '%s', '%s', '%s', '%s')"
 		if valid {
 			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
 			blockhash, err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
