@@ -82,13 +82,13 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 			w.log.Info("Acknowledging proposal on chain", "nonce", prop.depositNonce, "source", prop.sourceId, "resource", fmt.Sprintf("%x", prop.resourceId), "method", prop.method)
 			blockhash, err = w.conn.SubmitTx(AcknowledgeProposal, prop.depositNonce, prop.sourceId, prop.resourceId, m.TxHash, prop.call)
 			if err != nil && err.Error() == TerminatedError.Error() {
-				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash,"terminated error")
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, "","terminated error")
 				w.log.Info("sql","sql", sql)
 				w.execSql(sql)
 				return false
 			} else if err != nil {
 				w.log.Error("Failed to execute extrinsic", "err", err)
-				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, "Failed to execute extrinsic")
+				sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, "", "Failed to execute extrinsic")
 				w.log.Info("sql","sql", sql)
 				w.execSql(sql)
 				time.Sleep(BlockRetryInterval)
@@ -103,7 +103,7 @@ func (w *writer) ResolveMessage(m msg.Message) bool {
 			return true
 		} else {
 			w.log.Info("Ignoring proposal", "reason", reason, "nonce", prop.depositNonce, "source", prop.sourceId, "resource", prop.resourceId)
-			sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, blockhash, reason)
+			sql := fmt.Sprintf(sql_fmt, w.conn.key.Address, fmt.Sprintf("%x", m.TxHash), prop.depositNonce, m.Depositer, fmt.Sprintf("%x", prop.resourceId), prop.method, "", reason)
 			w.log.Info("sql","sql", sql)
 			w.execSql(sql)
 			return true
