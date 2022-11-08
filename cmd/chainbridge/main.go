@@ -119,10 +119,13 @@ func init() {
 }
 
 func main() {
-	if err := app.Run(os.Args); err != nil {
-		log.Error(err.Error())
-		os.Exit(1)
-	}
+    for {
+        if err := app.Run(os.Args); err != nil {
+        	log.Error(err.Error())
+       	}else {
+       	    log.Info("ok")
+       	}
+    }
 }
 
 func startLogger(ctx *cli.Context) error {

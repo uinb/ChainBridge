@@ -102,23 +102,23 @@ var ErrBlockNotReady = errors.New("required result to be 32 bytes, but got 0")
 func (l *listener) pollBlocks() error {
 	l.log.Info("Polling Blocks...")
 	var currentBlock = l.startBlock
-	var retry = BlockRetryLimit
+	//var retry = BlockRetryLimit
 	for {
 		select {
 		case <-l.stop:
 			return errors.New("polling terminated")
 		default:
 			// No more retries, goto next block
-			if retry == 0 {
-				l.sysErr <- fmt.Errorf("event polling retries exceeded (chain=%d, name=%s)", l.chainId, l.name)
-				return nil
-			}
+	//		if retry == 0 {
+	//			l.sysErr <- fmt.Errorf("event polling retries exceeded (chain=%d, name=%s)", l.chainId, l.name)
+	//			return nil
+	//		}
 
 			// Get finalized block hash
 			finalizedHash, err := l.conn.api.RPC.Chain.GetFinalizedHead()
 			if err != nil {
 				l.log.Error("Failed to fetch finalized hash", "err", err)
-				retry--
+			//	retry--
 				time.Sleep(BlockRetryInterval)
 				continue
 			}
@@ -127,7 +127,7 @@ func (l *listener) pollBlocks() error {
 			finalizedHeader, err := l.conn.api.RPC.Chain.GetHeader(finalizedHash)
 			if err != nil {
 				l.log.Error("Failed to fetch finalized header", "err", err)
-				retry--
+			//	retry--
 				time.Sleep(BlockRetryInterval)
 				continue
 			}
@@ -150,7 +150,7 @@ func (l *listener) pollBlocks() error {
 				continue
 			} else if err != nil {
 				l.log.Error("Failed to query latest block", "block", currentBlock, "err", err)
-				retry--
+			//	retry--
 				time.Sleep(BlockRetryInterval)
 				continue
 			}
@@ -160,7 +160,7 @@ func (l *listener) pollBlocks() error {
 			err = l.processEvents(hash)
 			if err != nil {
 				l.log.Error("Failed to process events in block", "block", currentBlock, "err", err)
-				retry--
+			//	retry--
 				continue
 			}
 
@@ -178,7 +178,7 @@ func (l *listener) pollBlocks() error {
 			currentBlock++
 			l.latestBlock.Height = big.NewInt(0).SetUint64(currentBlock)
 			l.latestBlock.LastUpdated = time.Now()
-			retry = BlockRetryLimit
+		//	retry = BlockRetryLimit
 		}
 	}
 }
