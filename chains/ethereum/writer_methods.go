@@ -266,7 +266,7 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 
 			if err == nil {
 				w.log.Info("Submitted proposal vote", "tx", tx.Hash(), "src", m.Source, "depositNonce", m.DepositNonce)
-                 l := fmt.Sprintf("insert ignore into t_proposal(f_action, f_nonce, f_relayer, f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', %d, '%s', '%s', '%s', '%s', '%s')",
+                 l := fmt.Sprintf("insert ignore into t_ethereum_proposal(f_action, f_nonce, f_relayer, f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', %d, '%s', '%s', '%s', '%s', '%s')",
                            "vote", m.DepositNonce, w.conn.Keypair().Address(), tx.Hash(), m.ResourceId.Hex(), big.NewInt(0).SetBytes(m.Payload[0].([]byte)), fmt.Sprintf("%#x", m.Payload[1].([]byte)[:]))
                 w.log.Debug("add log", "log", l)
                 w.execSql(l)
@@ -324,7 +324,7 @@ func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) 
 
 			if err == nil {
 				w.log.Info("Submitted proposal execution", "tx", tx.Hash(), "src", m.Source, "dst", m.Destination, "nonce", m.DepositNonce)
-                 l := fmt.Sprintf("insert ignore into t_proposal(f_action, f_nonce, f_relayer,  f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', %d, '%s', '%s', '%s', '%s', '%s')",
+                 l := fmt.Sprintf("insert ignore into t_ethereum_proposal(f_action, f_nonce, f_relayer,  f_txhash, f_resource_id, f_amount, f_recipient) values( '%s', %d, '%s', '%s', '%s', '%s', '%s')",
                            "execute", m.DepositNonce, w.conn.Keypair().Address(), tx.Hash(), m.ResourceId.Hex(), big.NewInt(0).SetBytes(m.Payload[0].([]byte)), fmt.Sprintf("%#x", m.Payload[1].([]byte)[:]))
                 w.log.Debug("add log", "log", l)
 				w.execSql(l)
