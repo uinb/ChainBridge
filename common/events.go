@@ -22,7 +22,7 @@ type Events struct {
 
 type EventFungibleTransfer struct {
 	Phase        types.Phase
-	Destination  types.U8
+	Destination  types.U16
 	DepositNonce types.U64
 	ResourceId   types.Bytes32
 	Amount       types.U256
@@ -32,7 +32,7 @@ type EventFungibleTransfer struct {
 
 type EventNonFungibleTransfer struct {
 	Phase        types.Phase
-	Destination  types.U8
+	Destination  types.U16
 	DepositNonce types.U64
 	ResourceId   types.Bytes32
 	TokenId      types.Bytes
@@ -43,7 +43,7 @@ type EventNonFungibleTransfer struct {
 
 type EventGenericTransfer struct {
 	Phase        types.Phase
-	Destination  types.U8
+	Destination  types.U16
 	DepositNonce types.U64
 	ResourceId   types.Bytes32
 	Metadata     types.Bytes
@@ -58,7 +58,7 @@ type EventRelayerThresholdChanged struct {
 
 type EventChainWhitelisted struct {
 	Phase   types.Phase
-	ChainId types.U8
+	ChainId types.U16
 	Topics  []types.Hash
 }
 
@@ -76,7 +76,7 @@ type EventRelayerRemoved struct {
 
 type EventVoteFor struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Voter        types.AccountID
 	Topics       []types.Hash
@@ -84,7 +84,7 @@ type EventVoteFor struct {
 
 type EventVoteAgainst struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Voter        types.AccountID
 	Topics       []types.Hash
@@ -92,28 +92,28 @@ type EventVoteAgainst struct {
 
 type EventProposalApproved struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Topics       []types.Hash
 }
 
 type EventProposalRejected struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Topics       []types.Hash
 }
 
 type EventProposalSucceeded struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Topics       []types.Hash
 }
 
 type EventProposalFailed struct {
 	Phase        types.Phase
-	SourceId     types.U8
+	SourceId     types.U16
 	DepositNonce types.U64
 	Topics       []types.Hash
 }

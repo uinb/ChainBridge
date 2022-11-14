@@ -45,7 +45,7 @@ func (m *voteStatus) Decode(decoder scale.Decoder) error {
 type proposal struct {
 	depositNonce types.U64
 	call         types.Call
-	sourceId     types.U8
+	sourceId     types.U16
 	resourceId   types.Bytes32
 	method       string
 }
@@ -85,11 +85,20 @@ func (w *writer) createFungibleProposal(m msg.Message) (*proposal, error) {
 		}
 		call.Args = append(call.Args, eRID...)
 	}
-
+/*    sourceU8 := types.U8(m.Source)
+	bsource, err  := sourceU8.MarshalJSON()
+	if err != nil {
+	    return nil, err
+	}
+	sId := types.U16(0)
+    err = sId.UnmarshalJSON(bsource)
+	if err != nil {
+	    return nil, err
+	}*/
 	return &proposal{
 		depositNonce: depositNonce,
 		call:         call,
-		sourceId:     types.U8(m.Source),
+		sourceId:     types.U16(m.Source),
 		resourceId:   types.NewBytes32(m.ResourceId),
 		method:       method,
 	}, nil
@@ -128,7 +137,7 @@ func (w *writer) createNonFungibleProposal(m msg.Message) (*proposal, error) {
 	return &proposal{
 		depositNonce: depositNonce,
 		call:         call,
-		sourceId:     types.U8(m.Source),
+		sourceId:     types.U16(m.Source),
 		resourceId:   types.NewBytes32(m.ResourceId),
 		method:       method,
 	}, nil
@@ -189,7 +198,7 @@ func (w *writer) createGenericProposal(m msg.Message) (*proposal, error) {
 	return &proposal{
 		depositNonce: types.U64(m.DepositNonce),
 		call:         call,
-		sourceId:     types.U8(m.Source),
+		sourceId:     types.U16(m.Source),
 		resourceId:   types.NewBytes32(m.ResourceId),
 		method:       method,
 	}, nil
