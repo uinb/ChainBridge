@@ -18,6 +18,13 @@ type Events struct {
 	ChainBridge_ProposalRejected        []EventProposalRejected        //nolint:stylecheck,golint
 	ChainBridge_ProposalSucceeded       []EventProposalSucceeded       //nolint:stylecheck,golint
 	ChainBridge_ProposalFailed          []EventProposalFailed          //nolint:stylecheck,golint
+	System_CodeUpdated                  []EventSystemCodeUpdated
+}
+
+// EventSystemCodeUpdated is emitted when the runtime code (`:code`) is updated
+type EventSystemCodeUpdated struct {
+	Phase  types.Phase
+	Topics []types.Hash
 }
 
 type EventFungibleTransfer struct {
