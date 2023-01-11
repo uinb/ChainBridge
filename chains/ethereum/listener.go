@@ -79,10 +79,12 @@ func (l *listener) start() error {
 	l.log.Debug("Starting listener...")
 
 	go func() {
-		err := l.pollBlocks()
-		if err != nil {
-			l.log.Error("Polling blocks failed", "err", err)
-		}
+        for {
+            err := l.pollBlocks()
+            if err != nil {
+                l.log.Error("Polling blocks failed", "err", err)
+            }
+        }
 	}()
 
 	return nil
