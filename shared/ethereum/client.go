@@ -35,7 +35,7 @@ type Client struct {
 
 func NewClient(endpoint string, kp *secp256k1.Keypair) (*Client, error) {
 	ctx := context.Background()
-	rpcClient, err := rpc.DialWebsocket(ctx, endpoint, "/ws")
+	rpcClient, err := rpc.DialContext(ctx, endpoint)
 	if err != nil {
 		return nil, err
 	}

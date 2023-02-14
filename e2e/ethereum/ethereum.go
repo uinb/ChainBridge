@@ -100,7 +100,7 @@ func DeployTestContracts(t *testing.T, client *utils.Client, endpoint string, id
 
 func CreateEthClient(t *testing.T, endpoint string, kp *secp256k1.Keypair) (*ethclient.Client, *bind.TransactOpts) {
 	ctx := context.Background()
-	rpcClient, err := rpc.DialWebsocket(ctx, endpoint, "/ws")
+	rpcClient, err := rpc.DialContext(ctx, endpoint)
 	if err != nil {
 		t.Fatal(err)
 	}

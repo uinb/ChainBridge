@@ -59,11 +59,9 @@ func (c *Connection) Connect() error {
 	var rpcClient *rpc.Client
 	var err error
 	// Start http or ws client
-	if c.http {
-		rpcClient, err = rpc.DialHTTP(c.endpoint)
-	} else {
-		rpcClient, err = rpc.DialWebsocket(context.Background(), c.endpoint, "/ws")
-	}
+
+	rpcClient, err = rpc.DialContext(context.Background(), c.endpoint, )
+
 	if err != nil {
 		return err
 	}
