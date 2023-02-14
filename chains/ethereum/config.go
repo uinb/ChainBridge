@@ -72,7 +72,7 @@ func parseChainConfig(chainCfg *core.ChainConfig) (*Config, error) {
 		gasLimit:               big.NewInt(DefaultGasLimit),
 		maxGasPrice:            big.NewInt(DefaultGasPrice),
 		gasMultiplier:          big.NewFloat(DefaultGasMultiplier),
-		http:                   false,
+		http:                   chainCfg.Http,
 		startBlock:             big.NewInt(0),
 		blockConfirmations:     big.NewInt(0),
 	}

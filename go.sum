@@ -368,6 +368,8 @@ github.com/uinb/chainbridge-utils v1.1.1-fusotao h1:JqZ1XsT/bH6B5Bm/1/Y85ZNghOQS
 github.com/uinb/chainbridge-utils v1.1.1-fusotao/go.mod h1:nFGPU4AnTtv9uFynTw2RwZhPZYYglzLz2KueRrQgzfg=
 github.com/uinb/chainbridge-utils v1.1.2-fusotao h1:Fucbh/ssSG3VYTkYz5mxVuta25Es7TG647X+LZKf/Fc=
 github.com/uinb/chainbridge-utils v1.1.2-fusotao/go.mod h1:GSe4qESWeq0Oti93AnAHl9s2KXbx6kHexEwIVT+qO5s=
+github.com/uinb/chainbridge-utils v1.1.3-fusotao h1:Pr3KneQCYCThBqlQ9R9PTs2FFRBL01Yrdp7Pd0SOa9Y=
+github.com/uinb/chainbridge-utils v1.1.3-fusotao/go.mod h1:GSe4qESWeq0Oti93AnAHl9s2KXbx6kHexEwIVT+qO5s=
 github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao h1:NOEImt1Vc5s9WGb41jVI5jVd0ho2NkI34XYOCMsBsk0=
 github.com/uinb/go-substrate-rpc-client/v4 v4.1.0-fusotao/go.mod h1:W95ZfojQ+g0QqZGWg2CeHaHsvYUj+kkJ2AHiEpQQmXw=
 github.com/urfave/cli/v2 v2.3.0 h1:qph92Y649prgesehzOrQjdWyxFOp/QVM+6imKHad91M=
