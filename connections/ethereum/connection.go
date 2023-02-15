@@ -17,7 +17,6 @@ import (
 	ethcommon "github.com/ethereum/go-ethereum/common"
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/ethereum/go-ethereum/rpc"
 )
 
 var BlockRetryInterval = time.Second * 5
@@ -39,6 +38,7 @@ type Connection struct {
 	stop     chan int // All routines should exit when this channel is closed
 }
 
+
 // NewConnection returns an uninitialized connection, must call Connection.Connect() before using.
 func NewConnection(endpoint string, http bool, kp *secp256k1.Keypair, log log15.Logger, gasLimit, gasPrice *big.Int, gasMultiplier *big.Float) *Connection {
 	return &Connection{
@@ -56,16 +56,16 @@ func NewConnection(endpoint string, http bool, kp *secp256k1.Keypair, log log15.
 // Connect starts the ethereum WS connection
 func (c *Connection) Connect() error {
 	c.log.Info("Connecting to ethereum chain...", "url", c.endpoint)
-	var rpcClient *rpc.Client
+	var rpcClient *ethclient.Client
 	var err error
 	// Start http or ws client
 
-	rpcClient, err = rpc.DialContext(context.Background(), c.endpoint, )
+	rpcClient, err = ethclient.DialContext(context.Background(), c.endpoint, )
 
 	if err != nil {
 		return err
 	}
-	c.conn = ethclient.NewClient(rpcClient)
+	c.conn = rpcClient;
 
 	// Construct tx opts, call opts, and nonce mechanism
 	opts, _, err := c.newTransactOpts(big.NewInt(0), c.gasLimit, c.maxGasPrice)
@@ -75,6 +75,17 @@ func (c *Connection) Connect() error {
 	c.opts = opts
 	c.nonce = 0
 	c.callOpts = &bind.CallOpts{From: c.kp.CommonAddress()}
+	return nil
+}
+
+func (c *Connection)Reconnect() error {
+
+	rpcClient, err := ethclient.DialContext(context.Background(), c.endpoint, )
+
+	if err != nil {
+		return err
+	}
+	c.conn = rpcClient
 	return nil
 }
 

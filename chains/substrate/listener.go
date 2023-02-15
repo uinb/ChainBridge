@@ -114,6 +114,7 @@ func (l *listener) pollBlocks() error {
 	//			return nil
 	//		}
 
+
 			// Get finalized block hash
 			finalizedHash, err := l.conn.api.RPC.Chain.GetFinalizedHead()
 			if err != nil {

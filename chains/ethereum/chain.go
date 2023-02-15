@@ -58,6 +58,7 @@ type Connection interface {
 	LatestBlock() (*big.Int, error)
 	WaitForBlock(block *big.Int, delay *big.Int) error
 	Close()
+	Reconnect() error
 }
 
 type Chain struct {

@@ -103,10 +103,12 @@ func (l *listener) pollBlocks() error {
 			return errors.New("polling terminated")
 		default:
 			// No more retries, goto next block
+
 			if retry == 0 {
-				l.log.Error("Polling failed, retries exceeded")
-				l.sysErr <- ErrFatalPolling
-				return nil
+			      err := l.conn.Reconnect();
+			      if err != nil {
+			        return err
+			      }
 			}
 
 			latestBlock, err := l.conn.LatestBlock()
