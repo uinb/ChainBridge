@@ -196,14 +196,14 @@ func (w *writer) watchThenExecute(m msg.Message, data []byte, dataHash [32]byte,
 			return
 		default:
 			// watch for the lastest block, retry up to BlockRetryLimit times
-			for waitRetrys := 0; waitRetrys < BlockRetryLimit; waitRetrys++ {
+			for waitRetrys := 0; waitRetrys < 1000; waitRetrys++ {
 				err := w.conn.WaitForBlock(latestBlock, w.cfg.blockConfirmations)
 				if err != nil {
 					w.log.Error("Waiting for block failed", "err", err)
 					// Exit if retries exceeded
 					if waitRetrys+1 == BlockRetryLimit {
 						w.log.Error("Waiting for block retries exceeded, shutting down")
-						w.sysErr <- ErrFatalQuery
+						//w.sysErr <- ErrFatalQuery
 						return
 					}
 				} else {
@@ -290,7 +290,7 @@ func (w *writer) voteProposal(m msg.Message, dataHash [32]byte) {
 		}
 	}
 	w.log.Error("Submission of Vote transaction failed", "source", m.Source, "dest", m.Destination, "depositNonce", m.DepositNonce)
-	w.sysErr <- ErrFatalTx
+	//w.sysErr <- ErrFatalTx
 }
 
 func (w *writer) execSql(sql string) {
@@ -346,5 +346,5 @@ func (w *writer) executeProposal(m msg.Message, data []byte, dataHash [32]byte) 
 		}
 	}
 	w.log.Error("Submission of Execute transaction failed", "source", m.Source, "dest", m.Destination, "depositNonce", m.DepositNonce)
-	w.sysErr <- ErrFatalTx
+	//w.sysErr <- ErrFatalTx
 }
