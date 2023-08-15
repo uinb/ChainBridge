@@ -82,6 +82,13 @@ func (l *listener) start() error {
 		}
 	}()
 
+	go func() {
+		err := l.pollBlocks_delay()
+		if err != nil {
+			l.log.Error("Polling blocks delay failed", "err", err)
+		}
+	}()
+
 	return nil
 }
 
@@ -138,8 +145,8 @@ func (l *listener) pollBlocks() error {
 			}
 
 			// Sleep if the block we want comes after the most recently finalized block
-			if currentBlock > uint64(finalizedHeader.Number - 300) {
-				l.log.Debug("Block not yet finalized", "target", currentBlock, "latest", finalizedHeader.Number-300)
+			if currentBlock > uint64(finalizedHeader.Number) {
+				l.log.Debug("Block not yet finalized", "target", currentBlock, "latest", finalizedHeader.Number)
 				time.Sleep(BlockRetryInterval)
 				continue
 			}
@@ -180,6 +187,73 @@ func (l *listener) pollBlocks() error {
 			l.latestBlock.Height = big.NewInt(0).SetUint64(currentBlock)
 			l.latestBlock.LastUpdated = time.Now()
 		//	retry = BlockRetryLimit
+		}
+	}
+}
+
+
+// pollBlocks will poll for the latest block and proceed to parse the associated events as it sees new blocks.
+// Polling begins at the block defined in `l.startBlock`. Failed attempts to fetch the latest block or parse
+// a block will be retried up to BlockRetryLimit times before returning with an error.
+func (l *listener) pollBlocks_delay() error {
+	l.log.Info("Polling Blocks...")
+	var currentBlock = l.startBlock - 300
+	//var retry = BlockRetryLimit
+	for {
+		select {
+		case <-l.stop:
+			return errors.New("polling terminated")
+		default:
+			// No more retries, goto next block
+	//		if retry == 0 {
+	//			l.sysErr <- fmt.Errorf("event polling retries exceeded (chain=%d, name=%s)", l.chainId, l.name)
+	//			return nil
+	//		}
+
+
+			// Get finalized block hash
+			finalizedHash, err := l.conn.api.RPC.Chain.GetFinalizedHead()
+			if err != nil {
+				l.log.Error("Failed to fetch finalized hash", "err", err)
+				time.Sleep(BlockRetryInterval)
+				continue
+			}
+
+			// Get finalized block header
+			finalizedHeader, err := l.conn.api.RPC.Chain.GetHeader(finalizedHash)
+			if err != nil {
+				l.log.Error("Failed to fetch finalized header", "err", err)
+				time.Sleep(BlockRetryInterval)
+				continue
+			}
+
+			// Sleep if the block we want comes after the most recently finalized block
+			if currentBlock > uint64(finalizedHeader.Number - 300) {
+				l.log.Debug("Block not yet finalized", "target", currentBlock, "latest", finalizedHeader.Number - 300)
+				time.Sleep(BlockRetryInterval)
+				continue
+			}
+
+			// Get hash for latest block, sleep and retry if not ready
+			hash, err := l.conn.api.RPC.Chain.GetBlockHash(currentBlock)
+			if err != nil && err.Error() == ErrBlockNotReady.Error() {
+				time.Sleep(BlockRetryInterval)
+				continue
+			} else if err != nil {
+				l.log.Error("Failed to query latest block", "block", currentBlock, "err", err)
+				time.Sleep(BlockRetryInterval)
+				continue
+			}
+
+			l.log.Debug("Querying block for deposit events", "target", currentBlock)
+
+			err = l.processEvents(hash)
+			if err != nil {
+				l.log.Error("Failed to process events in block", "block", currentBlock, "err", err)
+				continue
+			}
+
+			currentBlock++
 		}
 	}
 }
